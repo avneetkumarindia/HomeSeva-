@@ -1,0 +1,3141 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+<meta name="description" content="HomeSeva — book trusted, verified home service professionals: plumbers, electricians, cooks, caregivers and more, right at your door.">
+<meta name="theme-color" content="#14121C">
+<meta name="color-scheme" content="dark light">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="HomeSeva">
+<meta name="application-name" content="HomeSeva">
+<meta name="msapplication-TileColor" content="#14121C">
+<meta name="format-detection" content="telephone=no">
+
+<!--
+  ============================================================================
+  HOMESEVA — a single, self-contained home services booking page
+  ============================================================================
+  Hi there, future reader! 👋 This whole website — every color, every
+  animation, every line of logic — lives inside this ONE file. There are
+  no other files it depends on: no separate CSS file, no separate JS file,
+  no images pulled from the internet, no fonts downloaded from anywhere.
+  You could email this single file to a friend, and it would open and work
+  exactly the same on their computer.
+
+  We built it this way on purpose. It means:
+    - It never breaks because some other website it depended on went down.
+    - It works even with no internet connection (after the first visit).
+    - You can read every single line of what it does — nothing is hidden.
+
+  The file has three big parts, in this order:
+    1. <style>  — all the CSS (how things LOOK)
+    2. <body>   — all the HTML (what things ARE / the content)
+    3. <script> — all the JavaScript (how things BEHAVE when you interact)
+
+  Every section below has a big comment banner like this one, explaining
+  what it does in plain language before you read the code. Enjoy! 🌿
+  ============================================================================
+-->
+
+<!--
+  Favicon: instead of loading an image file from a server, we draw the
+  icon directly as an SVG "recipe" and hand it to the browser as a tiny
+  piece of text (a "data URI"). No image file exists anywhere but here.
+-->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23D4A94E'/%3E%3Cstop offset='.55' stop-color='%239B7EDE'/%3E%3Cstop offset='1' stop-color='%234FB6C9'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='%2314121C'/%3E%3Cpath d='M32 12 L52 28 V50 H12 V28 Z' fill='none' stroke='url(%23g)' stroke-width='4' stroke-linejoin='round'/%3E%3Ccircle cx='32' cy='38' r='5' fill='url(%23g)'/%3E%3C/svg%3E">
+
+<!--
+  Web App Manifest: this tiny JSON document tells phones "hey, this page
+  can be added to your home screen like a real app." Normally it lives in
+  its own manifest.json file — we instead bake it in as a data URI too,
+  so the whole app is still just this one .html file.
+-->
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22HomeSeva%20-%20Trusted%20Home%20Services%22%2C%22short_name%22%3A%22HomeSeva%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%2314121C%22%2C%22theme_color%22%3A%22%2314121C%22%2C%22description%22%3A%22Book%20trusted%20home%20service%20professionals.%22%7D">
+
+<title>HomeSeva — Trusted Home Services, Right At Your Door</title>
+
+<style>
+/* ============================================================================
+   1. CSS RESET — every browser has slightly different default spacing and
+   sizing baked in. We clear all of that away first, so our own styles are
+   the ONLY thing deciding how things look. Think of this like wiping a
+   whiteboard clean before drawing on it.
+   ========================================================================= */
+*, *::before, *::after{
+  box-sizing: border-box;      /* padding/border count INSIDE an element's width, not added on top */
+  margin: 0;
+  padding: 0;
+}
+html{
+  -webkit-text-size-adjust: 100%;   /* stops old iPhones from randomly enlarging text */
+  text-size-adjust: 100%;
+  scroll-behavior: smooth;          /* clicking a nav link glides to the section instead of jumping */
+}
+img, svg, canvas, video{ display:block; max-width:100%; }
+button, input, select, textarea{ font: inherit; color: inherit; }
+button{ cursor:pointer; background:none; border:none; }
+ul, ol{ list-style:none; }
+a{ color:inherit; text-decoration:none; }
+
+/* People who've told their operating system "please reduce motion" get a
+   calmer version of this site — every animation nearly disappears.
+   This one rule protects users with vestibular disorders or motion
+   sensitivity from a page that spins and floats everywhere. */
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================================================================
+   2. DESIGN TOKENS — every color, spacing value, shadow and easing curve
+   used anywhere on the page is defined ONCE here, as a named "variable".
+   Why? If we ever want to nudge the gold accent slightly warmer, we change
+   ONE line here instead of hunting through thousands of lines of CSS.
+   This is called a "token system" and it's how professional design teams
+   keep large projects consistent.
+   ========================================================================= */
+:root{
+  /* ---- DARK THEME (the default look, like a cosy evening) ---- */
+  --ink:            #14121C;   /* main background: deep charcoal with a whisper of violet, not flat black */
+  --ink-raised:     #1D1A29;   /* surfaces that sit "above" the background, like cards */
+  --ink-raised-2:   #262238;   /* surfaces that sit even higher, like the navbar */
+  --line:           rgba(255,255,255,0.09);   /* faint borders */
+  --glass-fill:     rgba(255,255,255,0.055);  /* frosted-glass panel fill */
+  --glass-fill-2:   rgba(255,255,255,0.09);
+  --glass-border:   rgba(255,255,255,0.14);
+
+  --text-1:         #F3F1EC;   /* main text — warm ivory, easy on dark backgrounds */
+  --text-2:         #B8B3C4;   /* secondary text */
+  --text-3:         #827E93;   /* faint / tertiary text */
+
+  --gold:           #D4A94E;   /* antique gold accent */
+  --gold-soft:      #E7C878;
+  --violet:         #9B7EDE;   /* soft amethyst accent */
+  --violet-soft:    #B9A3EC;
+  --teal:           #4FB6C9;   /* muted jewel-tone teal-blue accent */
+  --teal-soft:       #7ED0DE;
+
+  --grad-signature: linear-gradient(120deg, var(--gold) 0%, var(--violet) 52%, var(--teal) 100%);
+  --grad-signature-soft: linear-gradient(120deg, var(--gold-soft) 0%, var(--violet-soft) 52%, var(--teal-soft) 100%);
+
+  --shadow-1: 0 2px 10px rgba(0,0,0,0.25);
+  --shadow-2: 0 16px 40px rgba(0,0,0,0.35);
+  --shadow-3: 0 24px 70px rgba(0,0,0,0.45);
+  --glow-gold:   0 0 40px rgba(212,169,78,0.28);
+  --glow-violet: 0 0 40px rgba(155,126,222,0.28);
+
+  --radius-s:  12px;
+  --radius-m:  20px;
+  --radius-l:  28px;
+  --radius-pill: 999px;
+
+  --ease-smooth:  cubic-bezier(.4,0,.2,1);
+  --ease-out:     cubic-bezier(.16,1,.3,1);
+  --ease-elastic: cubic-bezier(.34,1.56,.64,1);
+  --dur-fast: .22s;
+  --dur-base: .45s;
+  --dur-slow: .9s;
+
+  --content-max: 1280px;
+  --gutter: clamp(20px, 5vw, 64px);
+
+  /* These variables are JS-controlled. --pointer-x/y track the mouse in
+     VIEWPORT pixels, for the big ambient glow that follows your cursor
+     around the whole page. --seal-x/y are separate on purpose: they track
+     the mouse only while it's inside the footer's signature seal, as a
+     PERCENTAGE relative to that one small box — reusing --pointer-x/y for
+     both would make the tiny footer glow jump around based on where your
+     mouse is on the entire page, which would look broken. */
+  --pointer-x: 50vw;
+  --pointer-y: 50vh;
+  --seal-x: 50%;
+  --seal-y: 25%;
+}
+
+/* ---- LIGHT THEME — swapped in when data-theme="light" is on <html> ---- */
+[data-theme="light"]{
+  --ink:            #FAF7F2;   /* warm ivory paper, not stark clinical white */
+  --ink-raised:     #FFFFFF;
+  --ink-raised-2:   #F1ECE2;
+  --line:           rgba(20,18,28,0.09);
+  --glass-fill:     rgba(255,255,255,0.55);
+  --glass-fill-2:   rgba(255,255,255,0.75);
+  --glass-border:   rgba(20,18,28,0.1);
+
+  --text-1:         #201D2B;
+  --text-2:         #55506A;
+  --text-3:         #837D96;
+
+  --gold:           #A97E1F;
+  --gold-soft:      #C79A3C;
+  --violet:         #7457B8;
+  --violet-soft:    #8F6FD1;
+  --teal:           #1B8CA0;
+  --teal-soft:      #2FA6BA;
+
+  --shadow-1: 0 2px 10px rgba(20,18,28,0.06);
+  --shadow-2: 0 16px 40px rgba(20,18,28,0.09);
+  --shadow-3: 0 24px 70px rgba(20,18,28,0.12);
+  --glow-gold:   0 0 40px rgba(169,126,31,0.16);
+  --glow-violet: 0 0 40px rgba(116,87,184,0.16);
+}
+
+/* Smoothly fade every color when the theme switches, instead of a jarring
+   instant flip — this is what makes theme-toggling feel premium. */
+html{ background: var(--ink); }
+body{
+  background: var(--ink);
+  color: var(--text-1);
+  transition: background var(--dur-base) var(--ease-smooth), color var(--dur-base) var(--ease-smooth);
+}
+
+/* ============================================================================
+   3. ANIMATION LIBRARY — every @keyframes "recipe" the page uses lives here,
+   in one place, like a spice rack. Elsewhere in the CSS we just say
+   "animation: fadeInUp .6s" and the browser looks up the recipe by name.
+   Each one is a tiny, named movement: fading in, sliding, bouncing, and so
+   on. We don't use all of them everywhere — that would feel chaotic — we
+   pick the right one for each moment, the way a chef picks the right spice.
+   ========================================================================= */
+
+@keyframes fadeIn{ from{opacity:0} to{opacity:1} }
+
+@keyframes fadeInUp{
+  from{ opacity:0; transform:translateY(32px); }
+  to{   opacity:1; transform:translateY(0); }
+}
+@keyframes fadeInDown{
+  from{ opacity:0; transform:translateY(-28px); }
+  to{   opacity:1; transform:translateY(0); }
+}
+@keyframes slideInLeft{
+  from{ opacity:0; transform:translateX(-48px); }
+  to{   opacity:1; transform:translateX(0); }
+}
+@keyframes slideInRight{
+  from{ opacity:0; transform:translateX(48px); }
+  to{   opacity:1; transform:translateX(0); }
+}
+@keyframes zoomIn{
+  from{ opacity:0; transform:scale(.86); }
+  to{   opacity:1; transform:scale(1); }
+}
+@keyframes bounceIn{
+  0%{   opacity:0; transform:scale(.4); }
+  55%{  opacity:1; transform:scale(1.06); }
+  75%{  transform:scale(.96); }
+  100%{ transform:scale(1); }
+}
+@keyframes rotateIn{
+  from{ opacity:0; transform:rotate(-9deg) scale(.92); }
+  to{   opacity:1; transform:rotate(0) scale(1); }
+}
+@keyframes flipIn{
+  from{ opacity:0; transform:perspective(700px) rotateY(-80deg); }
+  to{   opacity:1; transform:perspective(700px) rotateY(0); }
+}
+@keyframes skewIn{
+  from{ opacity:0; transform:skewY(5deg) translateY(26px); }
+  to{   opacity:1; transform:skewY(0) translateY(0); }
+}
+
+/* Looping "alive" animations — these run forever on purpose, but only on
+   a small, deliberate handful of elements (the hero orb, the footer seal)
+   so the page feels like it's gently breathing rather than vibrating. */
+@keyframes pulse{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.045); } }
+@keyframes float{ 0%,100%{ transform:translateY(0) rotate(0deg); } 50%{ transform:translateY(-18px) rotate(1.5deg); } }
+@keyframes floatSlow{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-10px); } }
+@keyframes breathe{ 0%,100%{ opacity:.55; transform:scale(1); } 50%{ opacity:1; transform:scale(1.035); } }
+@keyframes spin{ to{ transform:rotate(360deg); } }
+@keyframes morphBlob{
+  0%,100%{ border-radius:42% 58% 63% 37% / 41% 44% 56% 59%; }
+  34%{     border-radius:63% 37% 42% 58% / 59% 56% 44% 41%; }
+  67%{     border-radius:37% 63% 56% 44% / 48% 62% 38% 52%; }
+}
+@keyframes gradientShift{
+  0%{ background-position:0% 50%; }
+  50%{ background-position:100% 50%; }
+  100%{ background-position:0% 50%; }
+}
+@keyframes shimmer{ 0%{ background-position:-260% 0; } 100%{ background-position:260% 0; } }
+
+/* Attention-getting, short, one-shot animations — triggered by JS adding a
+   class for a moment, then usually removing it. */
+@keyframes shake{
+  0%,100%{ transform:translateX(0); }
+  20%{ transform:translateX(-7px); } 40%{ transform:translateX(7px); }
+  60%{ transform:translateX(-5px); } 80%{ transform:translateX(5px); }
+}
+@keyframes swing{
+  20%{ transform:rotate(11deg); } 40%{ transform:rotate(-9deg); }
+  60%{ transform:rotate(5deg); }  80%{ transform:rotate(-3deg); } 100%{ transform:rotate(0); }
+}
+@keyframes wobble{
+  0%,100%{ transform:translateX(0) rotate(0); }
+  15%{ transform:translateX(-11px) rotate(-5deg); }
+  30%{ transform:translateX(8px) rotate(4deg); }
+  45%{ transform:translateX(-6px) rotate(-3deg); }
+  60%{ transform:translateX(4px) rotate(2deg); }
+  75%{ transform:translateX(-2px) rotate(-1deg); }
+}
+@keyframes glitch{
+  0%,100%{ transform:translate(0); }
+  20%{ transform:translate(-2px,2px); }
+  40%{ transform:translate(-2px,-2px); }
+  60%{ transform:translate(2px,2px); }
+  80%{ transform:translate(2px,-2px); }
+}
+@keyframes ripple{ to{ transform:scale(3.6); opacity:0; } }
+@keyframes glowPulse{
+  0%,100%{ box-shadow:0 0 22px rgba(212,169,78,.22); }
+  50%{     box-shadow:0 0 46px rgba(212,169,78,.45); }
+}
+@keyframes blinkCaret{ 0%,49%{ opacity:1; } 50%,100%{ opacity:0; } }
+@keyframes marquee{ from{ transform:translateX(0); } to{ transform:translateX(-50%); } }
+@keyframes drawPath{ to{ stroke-dashoffset:0; } }
+@keyframes popIn{
+  0%{ opacity:0; transform:scale(.5); }
+  70%{ opacity:1; transform:scale(1.12); }
+  100%{ transform:scale(1); }
+}
+@keyframes spinReverse{ to{ transform:rotate(-360deg); } }
+@keyframes noiseShift{
+  0%,100%{ transform:translate(0,0); } 10%{ transform:translate(-1%,-2%); }
+  30%{ transform:translate(2%,1%); } 50%{ transform:translate(-1%,2%); }
+  70%{ transform:translate(1%,-1%); } 90%{ transform:translate(-2%,1%); }
+}
+
+/* ============================================================================
+   4. TYPOGRAPHY — the fonts, sizes and rhythm of every word on the page.
+   We deliberately use the DEVICE'S OWN fonts (no font files to download).
+   On an iPhone or Mac that means real San Francisco Pro. On Windows it's
+   Segoe UI. On Android/ChromeOS it's Roboto. Everyone gets a crisp,
+   native-feeling typeface built right into their own device.
+   ========================================================================= */
+body{
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;         /* stops sideways scrollbars from any stray wide element */
+}
+h1,h2,h3,h4{
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--text-1);
+}
+h1{ font-size: clamp(2.6rem, 5.6vw, 4.6rem); font-weight: 800; letter-spacing: -0.03em; }
+h2{ font-size: clamp(2rem, 3.6vw, 2.9rem); }
+h3{ font-size: clamp(1.25rem, 2vw, 1.6rem); }
+p{ color: var(--text-2); max-width: 62ch; }
+strong{ color:var(--text-1); font-weight:600; }
+
+/* A reusable "gradient text" treatment: instead of coloring the text with
+   a flat color, we paint our three-color gradient onto it and clip the
+   gradient so it only shows through the letter shapes themselves. */
+.grad-text{
+  background: var(--grad-signature);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: gradientShift 6s ease infinite;
+}
+
+/* ============================================================================
+   5. LAYOUT UTILITIES — small, reusable building blocks used all over the
+   page, so every section lines up consistently instead of each one
+   inventing its own spacing rules (a common source of messy CSS bugs).
+   ========================================================================= */
+.wrap{
+  width: 100%;
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+/* Every full-width section controls its OWN vertical spacing here, and
+   nowhere else — this is the rule that keeps section gaps predictable and
+   stops the classic bug where two neighbouring margins fight each other. */
+.section{
+  padding-block: clamp(64px, 10vw, 128px);
+  position: relative;
+}
+.section-head{
+  max-width: 640px;
+  margin-bottom: clamp(36px, 6vw, 64px);
+}
+.section-head p{ margin-top:14px; font-size:1.08rem; }
+.section-tag{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:.85rem;
+  color:var(--gold);
+  font-weight:600;
+  margin-bottom:14px;
+}
+.section-tag::before{
+  content:"";
+  width:7px; height:7px;
+  border-radius:50%;
+  background:var(--grad-signature);
+}
+
+/* A frosted-glass surface: translucent fill + a blur of whatever sits
+   behind it + a hairline border to catch the light. This is the
+   "glassmorphism" look used for the navbar, modal and a few cards.
+   @supports checks that the browser actually understands blur before
+   relying on it — older / smart-TV browsers just get a solid fallback
+   panel instead of a broken transparent one. */
+.glass{
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+}
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)){
+  .glass{
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
+  }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))){
+  .glass{ background: var(--ink-raised-2); }
+}
+
+/* Reveal-on-scroll: elements start invisible/offset, and a small bit of
+   JS (an IntersectionObserver, further down) adds ".in-view" the moment
+   they scroll into sight — that's what actually plays the animation. */
+.reveal{ opacity:0; }
+.reveal.in-view{ animation: fadeInUp .8s var(--ease-out) both; }
+.reveal.r-left.in-view{ animation-name: slideInLeft; }
+.reveal.r-right.in-view{ animation-name: slideInRight; }
+.reveal.r-zoom.in-view{ animation-name: zoomIn; }
+.reveal.r-flip.in-view{ animation-name: flipIn; }
+.reveal.r-skew.in-view{ animation-name: skewIn; }
+.reveal.r-rotate.in-view{ animation-name: rotateIn; }
+.reveal.r-bounce.in-view{ animation-name: bounceIn; }
+/* Staggering: children get a slightly later start time one after another,
+   so a row of cards ripples into view instead of popping in all at once. */
+.stagger > *{ opacity:0; }
+.stagger.in-view > *{ animation: fadeInUp .7s var(--ease-out) both; }
+.stagger.in-view > *:nth-child(1){ animation-delay:.03s; }
+.stagger.in-view > *:nth-child(2){ animation-delay:.09s; }
+.stagger.in-view > *:nth-child(3){ animation-delay:.15s; }
+.stagger.in-view > *:nth-child(4){ animation-delay:.21s; }
+.stagger.in-view > *:nth-child(5){ animation-delay:.27s; }
+.stagger.in-view > *:nth-child(6){ animation-delay:.33s; }
+.stagger.in-view > *:nth-child(7){ animation-delay:.39s; }
+.stagger.in-view > *:nth-child(8){ animation-delay:.45s; }
+.stagger.in-view > *:nth-child(n+9){ animation-delay:.5s; }
+
+/* Skip link: the very first thing a keyboard user tabs to. It stays
+   hidden off-screen until it receives focus, then jumps into view so
+   people navigating by keyboard don't have to tab through the entire
+   navbar just to reach the content. This is an accessibility essential,
+   not a decoration. */
+.skip-link{
+  position:absolute; left:12px; top:-60px;
+  background:var(--gold); color:#14121C;
+  padding:12px 18px; border-radius:var(--radius-s);
+  font-weight:700; z-index:1000;
+  transition:top var(--dur-fast) var(--ease-smooth);
+}
+.skip-link:focus{ top:12px; }
+
+/* A single, consistent focus ring used everywhere — visible, on purpose,
+   for anyone navigating with a keyboard rather than a mouse. */
+:focus-visible{
+  outline: 2.5px solid var(--teal-soft);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ============================================================================
+   6. BUTTONS — one visual language for every clickable action on the page.
+   ========================================================================= */
+.btn{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:15px 28px;
+  border-radius:var(--radius-pill);
+  font-weight:600;
+  font-size:1rem;
+  overflow:hidden;
+  isolation:isolate;
+  transition: transform var(--dur-fast) var(--ease-elastic),
+              box-shadow var(--dur-base) var(--ease-smooth);
+  -webkit-tap-highlight-color: transparent;
+  min-height:48px; /* comfortable touch target on phones */
+}
+.btn:active{ transform:scale(.96); }
+.btn-primary{
+  background: var(--grad-signature);
+  background-size:200% auto;
+  color:#14121C;
+  box-shadow: var(--shadow-2);
+}
+.btn-primary:hover{
+  background-position:right center;
+  transform:translateY(-3px);
+  box-shadow: var(--shadow-3), var(--glow-gold);
+}
+.btn-ghost{
+  background:transparent;
+  color:var(--text-1);
+  border:1.5px solid var(--glass-border);
+}
+.btn-ghost:hover{
+  border-color:var(--gold);
+  transform:translateY(-3px);
+  background:var(--glass-fill);
+}
+.btn-sm{ padding:10px 20px; font-size:.9rem; min-height:40px; }
+.btn-icon{
+  width:48px; height:48px; padding:0; border-radius:50%;
+  display:inline-flex; align-items:center; justify-content:center;
+}
+
+/* The little circular "splash" that spreads out from wherever a button
+   is clicked/tapped — added and removed by a small JS helper. */
+.ripple-dot{
+  position:absolute; border-radius:50%;
+  background:rgba(255,255,255,.55);
+  transform:scale(0); opacity:1;
+  animation:ripple .6s var(--ease-smooth) forwards;
+  pointer-events:none;
+}
+[data-theme="light"] .ripple-dot{ background:rgba(20,18,28,.25); }
+
+/* ============================================================================
+   7. NAVBAR — the strip fixed to the very top of the page. It's a frosted
+   glass panel that sits above everything else (a high z-index) so it's
+   always reachable, and it very slightly shrinks once you've scrolled
+   down, which is a nice small "the app noticed I scrolled" touch.
+   ========================================================================= */
+.navbar{
+  position:fixed; top:0; left:0; right:0;
+  z-index:500;
+  padding-block:18px;
+  transition: padding var(--dur-base) var(--ease-smooth), box-shadow var(--dur-base);
+}
+.navbar.scrolled{
+  padding-block:11px;
+  box-shadow:var(--shadow-2);
+  border-bottom:1px solid var(--glass-border);
+}
+.navbar .wrap{
+  display:flex; align-items:center; justify-content:space-between; gap:24px;
+}
+.brand{
+  display:flex; align-items:center; gap:10px;
+  font-weight:800; font-size:1.28rem; letter-spacing:-0.02em;
+  color:var(--text-1);
+}
+.brand-mark{
+  width:36px; height:36px; border-radius:11px;
+  background:var(--grad-signature);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.15rem;
+  box-shadow:var(--shadow-1);
+  flex-shrink:0;
+}
+.nav-links{
+  display:flex; align-items:center; gap:8px;
+}
+.nav-links a{
+  padding:9px 16px; border-radius:var(--radius-pill);
+  font-size:.96rem; font-weight:500; color:var(--text-2);
+  transition:color var(--dur-fast), background var(--dur-fast);
+}
+.nav-links a:hover{ color:var(--text-1); background:var(--glass-fill); }
+.nav-actions{ display:flex; align-items:center; gap:10px; }
+
+/* Theme toggle: a small pill switch. We swap which "face" (sun/moon) is
+   visible using a rotate + fade rather than swapping icon images. */
+.theme-toggle{
+  width:48px; height:48px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  border:1.5px solid var(--glass-border);
+  background:var(--glass-fill);
+  position:relative;
+  transition:transform var(--dur-fast) var(--ease-elastic), border-color var(--dur-fast);
+}
+.theme-toggle:hover{ transform:rotate(-14deg) scale(1.06); border-color:var(--gold); }
+.theme-toggle svg{ width:20px; height:20px; position:absolute; transition:opacity var(--dur-base), transform var(--dur-base) var(--ease-elastic); }
+.icon-sun{ opacity:0; transform:rotate(-90deg) scale(.5); color:var(--gold); }
+.icon-moon{ opacity:1; transform:rotate(0) scale(1); color:var(--violet-soft); }
+[data-theme="light"] .icon-sun{ opacity:1; transform:rotate(0) scale(1); }
+[data-theme="light"] .icon-moon{ opacity:0; transform:rotate(90deg) scale(.5); }
+
+.nav-toggle{
+  display:none; width:44px; height:44px; border-radius:12px;
+  border:1.5px solid var(--glass-border); background:var(--glass-fill);
+  flex-direction:column; align-items:center; justify-content:center; gap:5px;
+}
+.nav-toggle span{
+  width:20px; height:2px; background:var(--text-1); border-radius:2px;
+  transition:transform var(--dur-fast) var(--ease-smooth), opacity var(--dur-fast);
+}
+.nav-toggle.open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2){ opacity:0; }
+.nav-toggle.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+/* A soft dark backdrop behind the open mobile menu — dims the page so
+   attention stays on the menu, and doubles as a big, easy "tap anywhere
+   to close" target. Uses opacity + pointer-events rather than visibility,
+   so there's no focus-timing subtlety to worry about here (nothing inside
+   it needs to receive keyboard focus). */
+.nav-backdrop{
+  position:fixed; inset:0; z-index:499;
+  background:rgba(8,7,12,.55);
+  opacity:0; pointer-events:none;
+  transition:opacity var(--dur-base) var(--ease-smooth);
+}
+.nav-backdrop.show{ opacity:1; pointer-events:auto; }
+
+/* ============================================================================
+   8. HERO — the very first thing a visitor sees. This is the one section
+   we let be genuinely bold and alive (per the design brief: spend your
+   boldness in one place). Left: the headline and the ask. Right: a
+   slow, breathing composition of soft morphing shapes with the service
+   emojis gently orbiting around them, like a small solar system of trust.
+   ========================================================================= */
+.hero{
+  position:relative;
+  padding-top:clamp(140px, 18vw, 190px);
+  padding-bottom:clamp(80px, 10vw, 120px);
+  overflow:hidden;
+}
+/* A very soft, animated gradient wash sitting behind the whole hero,
+   slowly drifting — this is the one "ambient / always moving" animation
+   we allow, because it signals warmth rather than distracting attention. */
+.hero::before{
+  content:"";
+  position:absolute; inset:-20% -10%;
+  background:
+    radial-gradient(38% 46% at 18% 22%, rgba(212,169,78,.16), transparent 60%),
+    radial-gradient(42% 50% at 86% 18%, rgba(155,126,222,.18), transparent 60%),
+    radial-gradient(46% 54% at 60% 90%, rgba(79,182,201,.13), transparent 60%);
+  filter:blur(10px);
+  animation: gradientShift 16s ease-in-out infinite alternate;
+  pointer-events:none;
+  z-index:0;
+}
+.hero .wrap{
+  position:relative; z-index:1;
+  display:grid;
+  grid-template-columns: minmax(0,1.05fr) minmax(0,.95fr);
+  gap:clamp(32px, 6vw, 64px);
+  align-items:center;
+}
+.hero-copy .section-tag{ margin-bottom:20px; }
+.hero h1{ margin-bottom:22px; }
+.hero-sub{
+  font-size:clamp(1.05rem, 1.6vw, 1.24rem);
+  max-width:46ch;
+  margin-bottom:8px;
+}
+/* The typewriter line: JS types the characters in one at a time, and this
+   blinking little bar stands in for a cursor at the end of the text. */
+.type-line{
+  display:flex; align-items:center; gap:2px;
+  font-weight:600; color:var(--text-1);
+  min-height:1.6em;
+  margin-bottom:30px;
+}
+.type-caret{
+  display:inline-block; width:2px; height:1.05em;
+  background:var(--gold);
+  animation:blinkCaret .9s step-end infinite;
+}
+.hero-cta{ display:flex; flex-wrap:wrap; gap:14px; margin-bottom:38px; }
+.hero-trust{ display:flex; flex-wrap:wrap; gap:26px; }
+.hero-trust .trust-item{ display:flex; align-items:center; gap:9px; color:var(--text-2); font-size:.94rem; }
+.hero-trust strong{ color:var(--text-1); font-size:1.05rem; }
+.star-row{ color:var(--gold); letter-spacing:1px; }
+
+/* --- The orbit composition --- */
+.orbit-stage{
+  position:relative;
+  width:100%;
+  aspect-ratio: 1 / 1;
+  max-width:480px;
+  margin-inline:auto;
+  display:flex; align-items:center; justify-content:center;
+}
+.orbit-blob{
+  position:absolute; inset:8%;
+  background:var(--grad-signature);
+  opacity:.9;
+  filter:blur(.5px);
+  animation: morphBlob 11s ease-in-out infinite, float 8s ease-in-out infinite;
+  box-shadow:var(--shadow-3), var(--glow-violet);
+}
+.orbit-blob::after{
+  content:"";
+  position:absolute; inset:14%;
+  border-radius:inherit;
+  background:var(--ink);
+  opacity:.86;
+}
+[data-theme="light"] .orbit-blob::after{ background:var(--ink-raised); }
+.orbit-core{
+  position:relative; z-index:2;
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+  text-align:center;
+}
+.orbit-core .num{
+  font-size:clamp(2.1rem,4vw,2.9rem); font-weight:800;
+  background:var(--grad-signature); -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.orbit-core .lbl{ font-size:.82rem; color:var(--text-2); max-width:16ch; }
+
+.orbit-ring{
+  position:absolute; inset:0;
+  border-radius:50%;
+  border:1px dashed var(--glass-border);
+}
+.orbit-ring.r2{ inset:12%; animation:spin 40s linear infinite; }
+.orbit-ring.r1{ inset:-4%; animation:spinReverse 55s linear infinite; }
+.orbit-chip{
+  position:absolute;
+  width:56px; height:56px; border-radius:16px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5rem;
+  background:var(--glass-fill-2);
+  border:1px solid var(--glass-border);
+  box-shadow:var(--shadow-2);
+  animation: floatSlow 5s ease-in-out infinite;
+}
+@supports (backdrop-filter: blur(1px)){ .orbit-chip{ backdrop-filter:blur(14px); } }
+.orbit-chip.c1{ top:2%;  left:8%;  animation-delay:.2s; }
+.orbit-chip.c2{ top:12%; right:0%; animation-delay:1s; }
+.orbit-chip.c3{ bottom:6%; left:0%; animation-delay:.6s; }
+.orbit-chip.c4{ bottom:0%; right:10%; animation-delay:1.4s; }
+.orbit-chip.c5{ top:48%; left:-6%; animation-delay:1.8s; }
+
+.scroll-cue{
+  position:absolute; bottom:18px; left:50%; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  color:var(--text-3); font-size:.78rem; z-index:1;
+}
+.scroll-cue .mouse{
+  width:22px; height:34px; border-radius:12px; border:2px solid var(--text-3);
+  position:relative;
+}
+.scroll-cue .mouse::after{
+  content:""; position:absolute; top:6px; left:50%; transform:translateX(-50%);
+  width:3px; height:7px; border-radius:2px; background:var(--gold);
+  animation:scrollDot 1.6s ease infinite;
+}
+@keyframes scrollDot{ 0%{opacity:1; top:6px;} 80%{opacity:0; top:18px;} 100%{opacity:0; top:6px;} }
+
+/* ============================================================================
+   9. STATS STRIP — a slim band of trust numbers sitting right under the
+   hero. Built as ONE glass panel with internal dividers (not four separate
+   cards), so it reads as a single confident statement rather than a row
+   of repeated boxes.
+   ========================================================================= */
+.stats-strip{
+  padding-block: 0 clamp(40px,6vw,72px);
+}
+.stats-panel{
+  border-radius:var(--radius-l);
+  padding: clamp(22px,4vw,34px) clamp(18px,4vw,40px);
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+}
+.stat-item{
+  text-align:center;
+  padding-inline:12px;
+  border-left:1px solid var(--line);
+}
+.stat-item:first-child{ border-left:none; }
+.stat-num{
+  font-size:clamp(1.7rem,3.4vw,2.5rem); font-weight:800;
+  color:var(--text-1); letter-spacing:-0.02em;
+  font-variant-numeric: tabular-nums;
+}
+.stat-lbl{ font-size:.86rem; color:var(--text-2); margin-top:4px; }
+
+/* ============================================================================
+   10. SERVICES — the heart of the page. Styled less like a grid of
+   identical SaaS cards, and more like a shop signboard: a few larger
+   "featured" tiles for the most-asked-for services, and smaller tiles
+   for the rest, all filterable by category or by typing in the search
+   box. This is a real, working filter — try it once the page is open.
+   ========================================================================= */
+.services-head{
+  display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between;
+  gap:24px;
+  margin-bottom:clamp(28px,4vw,40px);
+}
+.services-head .section-head{ margin-bottom:0; }
+
+.service-controls{
+  display:flex; flex-wrap:wrap; gap:12px;
+  margin-bottom:clamp(28px,4vw,36px);
+}
+.search-box{
+  flex:1 1 240px;
+  display:flex; align-items:center; gap:10px;
+  padding:12px 18px;
+  border-radius:var(--radius-pill);
+  border:1.5px solid var(--glass-border);
+  background:var(--glass-fill);
+}
+.search-box svg{ width:18px; height:18px; color:var(--text-3); flex-shrink:0; }
+.search-box input{
+  border:none; background:transparent; outline:none;
+  width:100%; color:var(--text-1); font-size:.98rem;
+}
+.search-box input::placeholder{ color:var(--text-3); }
+.filter-pills{ display:flex; flex-wrap:wrap; gap:9px; }
+.filter-pill{
+  padding:11px 20px;
+  border-radius:var(--radius-pill);
+  border:1.5px solid var(--glass-border);
+  background:transparent;
+  font-size:.9rem; font-weight:600; color:var(--text-2);
+  transition: all var(--dur-fast) var(--ease-smooth);
+  white-space:nowrap;
+}
+.filter-pill:hover{ border-color:var(--gold); color:var(--text-1); }
+.filter-pill.active{
+  background:var(--grad-signature); color:#14121C; border-color:transparent;
+}
+
+.service-grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  grid-auto-rows: minmax(150px,auto);
+  grid-auto-flow: dense;
+  gap:16px;
+}
+.service-tile{
+  position:relative;
+  border-radius:var(--radius-m);
+  padding:22px;
+  display:flex; flex-direction:column; justify-content:space-between;
+  background:var(--ink-raised);
+  border:1px solid var(--line);
+  box-shadow: 6px 6px 16px rgba(0,0,0,0.22), -6px -6px 16px rgba(255,255,255,0.015);
+  overflow:hidden;
+  cursor:pointer;
+  transition: transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base), border-color var(--dur-base);
+}
+[data-theme="light"] .service-tile{
+  box-shadow: 6px 6px 16px rgba(20,18,28,0.06), -6px -6px 16px rgba(255,255,255,0.7);
+}
+.service-tile::before{
+  content:"";
+  position:absolute; inset:0;
+  background:var(--grad-signature);
+  opacity:0;
+  transition:opacity var(--dur-base);
+  z-index:0;
+}
+.service-tile:hover{
+  transform:translateY(-6px);
+  border-color:transparent;
+  box-shadow:var(--shadow-3);
+}
+.service-tile:hover::before{ opacity:.14; }
+.service-tile.featured{ grid-column:span 2; grid-row:span 2; }
+.service-tile .t-icon{
+  font-size:2rem; width:56px; height:56px; border-radius:16px;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--glass-fill-2); position:relative; z-index:1;
+  transition: transform var(--dur-base) var(--ease-elastic);
+}
+.service-tile:hover .t-icon{ transform:scale(1.12) rotate(-6deg); }
+.service-tile.featured .t-icon{ font-size:2.6rem; width:70px; height:70px; }
+.t-body{ position:relative; z-index:1; margin-top:16px; }
+.t-body h3{ margin-bottom:6px; }
+.t-body p{ font-size:.9rem; margin-bottom:0; }
+.service-tile.featured .t-body h3{ font-size:clamp(1.35rem,2.2vw,1.7rem); }
+.t-cat{
+  position:relative; z-index:1;
+  display:inline-block; margin-top:14px;
+  font-size:.76rem; color:var(--text-3); font-weight:600;
+}
+.t-arrow{
+  position:absolute; top:20px; right:20px; z-index:1;
+  width:34px; height:34px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--glass-fill-2);
+  opacity:0; transform:translate(-6px,6px);
+  transition: all var(--dur-fast) var(--ease-smooth);
+}
+.service-tile:hover .t-arrow{ opacity:1; transform:translate(0,0); }
+.service-tile.hidden-tile{ display:none; }
+
+.services-more{ text-align:center; margin-top:32px; }
+.no-results{
+  text-align:center; padding:50px 20px; color:var(--text-2);
+  display:none;
+}
+.no-results.show{ display:block; }
+.no-results .emoji{ font-size:2.6rem; margin-bottom:12px; }
+
+/* ============================================================================
+   11. HOW IT WORKS — this content genuinely IS a sequence (step 1, 2, 3, 4),
+   so — unlike the services grid — numbers are earned here. A thin path
+   connects the steps and "draws" itself in as you scroll to it.
+   ========================================================================= */
+.how-section{ background:var(--ink-raised); border-radius:var(--radius-l); }
+.how-steps{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:28px;
+  position:relative;
+}
+.how-path{ position:absolute; top:34px; left:0; right:0; height:2px; z-index:0; }
+.how-path svg{ width:100%; height:2px; overflow:visible; }
+.how-path path{
+  stroke:var(--glass-border); stroke-width:2; fill:none;
+  stroke-dasharray:6 8;
+}
+.how-path .fill-path{
+  stroke:url(#howGrad); stroke-width:2; fill:none;
+  stroke-dasharray:1000; stroke-dashoffset:1000;
+}
+.how-path .fill-path.in-view{ animation:drawPath 1.6s var(--ease-out) forwards; }
+.how-step{ position:relative; z-index:1; text-align:left; }
+.how-num{
+  width:68px; height:68px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-weight:800; font-size:1.4rem;
+  background:var(--ink); border:2px solid var(--glass-border);
+  color:var(--text-1);
+  margin-bottom:18px;
+  transition: border-color var(--dur-base), transform var(--dur-base) var(--ease-elastic);
+}
+.how-step:hover .how-num{
+  border-color:var(--gold);
+  transform:scale(1.08) rotate(-4deg);
+  box-shadow:var(--glow-gold);
+}
+.how-step h3{ margin-bottom:8px; }
+.how-step p{ font-size:.94rem; }
+
+/* ============================================================================
+   12. BOOKING — a warm, low-friction "counter form", laid out in two
+   columns: reassurance on the left, the actual form on the right in a
+   raised card. Forms should feel calm, not maximalist — so this section
+   is deliberately the quietest, most minimal one on the page.
+   ========================================================================= */
+.booking-grid{
+  display:grid;
+  grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr);
+  gap:clamp(32px,6vw,64px);
+  align-items:start;
+}
+.booking-aside .section-head{ margin-bottom:28px; }
+.reassure-list{ display:flex; flex-direction:column; gap:18px; }
+.reassure-item{ display:flex; gap:14px; align-items:flex-start; }
+.reassure-item .r-icon{
+  width:42px; height:42px; border-radius:12px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--glass-fill-2); font-size:1.15rem;
+}
+.reassure-item h4{ font-size:1rem; margin-bottom:3px; color:var(--text-1); font-weight:600; }
+.reassure-item p{ font-size:.88rem; }
+
+.ticker{
+  margin-top:32px; padding:16px 18px; border-radius:var(--radius-m);
+  display:flex; align-items:center; gap:12px;
+  overflow:hidden; position:relative;
+}
+.ticker .dot{
+  width:9px; height:9px; border-radius:50%; background:#5CD68A; flex-shrink:0;
+  box-shadow:0 0 0 0 rgba(92,214,138,.5);
+  animation: tickerPing 2s ease infinite;
+}
+@keyframes tickerPing{
+  0%{ box-shadow:0 0 0 0 rgba(92,214,138,.5); }
+  70%{ box-shadow:0 0 0 9px rgba(92,214,138,0); }
+  100%{ box-shadow:0 0 0 0 rgba(92,214,138,0); }
+}
+.ticker span{ font-size:.86rem; color:var(--text-2); }
+.ticker strong{ color:var(--text-1); }
+
+.booking-card{
+  border-radius:var(--radius-l);
+  padding:clamp(24px,4vw,40px);
+}
+.form-row{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+.field{ display:flex; flex-direction:column; gap:7px; margin-bottom:16px; }
+.field label{ font-size:.85rem; font-weight:600; color:var(--text-2); }
+.field input, .field select, .field textarea{
+  padding:13px 16px;
+  border-radius:var(--radius-s);
+  border:1.5px solid var(--glass-border);
+  background:var(--ink);
+  color:var(--text-1);
+  font-size:.96rem;
+  transition:border-color var(--dur-fast), box-shadow var(--dur-fast);
+  width:100%;
+}
+[data-theme="light"] .field input, [data-theme="light"] .field select, [data-theme="light"] .field textarea{
+  background:#FCFAF6;
+}
+.field input:focus, .field select:focus, .field textarea:focus{
+  outline:none; border-color:var(--gold);
+  box-shadow:0 0 0 4px rgba(212,169,78,.14);
+}
+.field textarea{ resize:vertical; min-height:88px; }
+.field.error input, .field.error select{ border-color:#E2685F; animation:shake .4s; }
+.field-msg{ font-size:.78rem; color:#E2685F; min-height:1em; }
+.field.has-value label{ color:var(--gold); }
+.form-submit{ width:100%; margin-top:6px; }
+
+/* The little checkmark that draws itself when a booking is confirmed */
+.success-check{
+  width:74px; height:74px; margin-inline:auto 18px;
+  display:flex; align-items:center; justify-content:center;
+}
+.success-check svg{ width:100%; height:100%; }
+.success-check circle{
+  stroke:#5CD68A; stroke-width:3; fill:none;
+  stroke-dasharray:166; stroke-dashoffset:166;
+  animation: drawPath .6s var(--ease-out) forwards;
+}
+.success-check path{
+  stroke:#5CD68A; stroke-width:4; fill:none; stroke-linecap:round; stroke-linejoin:round;
+  stroke-dasharray:48; stroke-dashoffset:48;
+  animation: drawPath .4s var(--ease-out) .55s forwards;
+}
+.booking-success{ display:none; text-align:center; padding:20px 0; }
+.booking-success.show{ display:block; animation:zoomIn .5s var(--ease-out); }
+.booking-success h3{ margin-bottom:8px; }
+.booking-success p{ margin-inline:auto; }
+
+/* ============================================================================
+   13. TESTIMONIALS — a horizontally-snapping strip of real-feeling voices,
+   styled as soft "claymorphic" cards (puffy, rounded, gentle dual shadow —
+   like pressed clay rather than glass or flat SaaS cards). You can drag /
+   swipe it, or use the two arrow buttons.
+   ========================================================================= */
+.testi-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap; }
+.testi-arrows{ display:flex; gap:10px; }
+.testi-track{
+  display:flex; gap:20px;
+  overflow-x:auto; scroll-snap-type:x mandatory;
+  padding:10px 4px 26px;
+  margin-top:clamp(24px,4vw,36px);
+  scrollbar-width:thin;
+}
+.testi-track::-webkit-scrollbar{ height:6px; }
+.testi-track::-webkit-scrollbar-thumb{ background:var(--glass-border); border-radius:10px; }
+.testi-card{
+  flex:0 0 clamp(260px, 34vw, 340px);
+  scroll-snap-align:start;
+  border-radius:28px;
+  padding:26px;
+  background:var(--ink-raised);
+  box-shadow:
+    8px 8px 20px rgba(0,0,0,0.28),
+   -8px -8px 20px rgba(255,255,255,0.02),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+}
+[data-theme="light"] .testi-card{
+  box-shadow:
+    8px 8px 20px rgba(20,18,28,0.08),
+   -8px -8px 20px rgba(255,255,255,0.9),
+    inset 0 1px 0 rgba(255,255,255,0.6);
+}
+.testi-quote{ color:var(--gold); font-size:2rem; line-height:1; margin-bottom:10px; display:block; }
+.testi-card p{ font-size:.98rem; color:var(--text-1); margin-bottom:18px; }
+.testi-who{ display:flex; align-items:center; gap:12px; }
+.testi-avatar{
+  width:44px; height:44px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--grad-signature); color:#14121C; font-weight:700;
+  flex-shrink:0;
+}
+.testi-name{ font-size:.92rem; font-weight:700; color:var(--text-1); }
+.testi-loc{ font-size:.8rem; color:var(--text-3); }
+.testi-track-progress{
+  height:3px; border-radius:3px; background:var(--line);
+  margin-top:4px; overflow:hidden;
+}
+.testi-track-progress-fill{
+  height:100%; width:20%; border-radius:3px;
+  background:var(--grad-signature);
+  transition: width var(--dur-base) var(--ease-smooth), transform var(--dur-base) var(--ease-smooth);
+}
+
+/* ============================================================================
+   14. FAQ — a plain, left-aligned accordion. No decoration for its own
+   sake here; the only job of this section is to answer questions fast.
+   ========================================================================= */
+.faq-list{ max-width:760px; }
+.faq-item{
+  border-bottom:1px solid var(--line);
+}
+.faq-q{
+  width:100%; display:flex; align-items:center; justify-content:space-between; gap:20px;
+  padding:22px 4px; text-align:left;
+  font-size:1.02rem; font-weight:600; color:var(--text-1);
+}
+.faq-q .plus{
+  width:26px; height:26px; flex-shrink:0; position:relative;
+}
+.faq-q .plus::before, .faq-q .plus::after{
+  content:""; position:absolute; background:var(--gold); border-radius:2px;
+  transition:transform var(--dur-base) var(--ease-smooth);
+}
+.faq-q .plus::before{ top:50%; left:0; width:100%; height:2px; margin-top:-1px; }
+.faq-q .plus::after{ left:50%; top:0; height:100%; width:2px; margin-left:-1px; }
+.faq-item.open .faq-q .plus::after{ transform:rotate(90deg); opacity:0; }
+.faq-a{
+  max-height:0; overflow:hidden;
+  transition: max-height var(--dur-base) var(--ease-smooth);
+}
+.faq-a p{ padding:0 4px 22px; font-size:.95rem; max-width:66ch; }
+
+/* ============================================================================
+   15. FOOTER — the site's closing note. Ordinary footer content up top
+   (links, categories, contact), then underneath, a quieter, more personal
+   "signature seal": a soft glowing plate that notices your cursor and
+   breathes gently, with a maker's mark and a half-hidden line of thought
+   beneath it. This is the one place on the page allowed to feel personal
+   rather than purely functional.
+   ========================================================================= */
+.site-footer{
+  position:relative;
+  background:var(--ink-raised);
+  border-top:1px solid var(--line);
+  overflow:hidden;
+  padding-top:clamp(56px,7vw,84px);
+}
+/* A whisper of film-grain texture, built from nothing but a repeating SVG
+   noise filter — no image file involved. Kept extremely faint on purpose. */
+.footer-noise{
+  position:absolute; inset:-10%;
+  opacity:.05; mix-blend-mode:overlay; pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: noiseShift 9s steps(6) infinite;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns: 1.3fr 1fr 1fr 1fr;
+  gap:36px;
+  padding-bottom:44px;
+  position:relative; z-index:1;
+}
+.footer-about p{ font-size:.92rem; margin-top:12px; max-width:34ch; }
+.footer-col h4{ font-size:.86rem; color:var(--text-1); margin-bottom:16px; font-weight:700; }
+.footer-col ul{ display:flex; flex-direction:column; gap:11px; }
+.footer-col a{ font-size:.9rem; color:var(--text-2); transition:color var(--dur-fast), padding-left var(--dur-fast); }
+.footer-col a:hover{ color:var(--gold); padding-left:4px; }
+.footer-divider{ height:1px; background:var(--line); position:relative; z-index:1; }
+
+/* --- The signature seal --- */
+.signature-seal{
+  position:relative; z-index:1;
+  max-width:560px; margin:48px auto 12px;
+  border-radius:var(--radius-l);
+  padding:36px 30px;
+  text-align:center;
+  background:var(--glass-fill);
+  border:1px solid var(--glass-border);
+  overflow:hidden;
+  isolation:isolate;
+  transition: transform var(--dur-slow) var(--ease-smooth);
+}
+@supports (backdrop-filter:blur(1px))or(-webkit-backdrop-filter:blur(1px)){
+  .signature-seal{ backdrop-filter:blur(16px); -webkit-backdrop-filter:blur(16px); }
+}
+/* A soft radial light that lives INSIDE the seal and quietly follows the
+   cursor (JS updates --pointer-x/--pointer-y as the mouse moves over it).
+   It also breathes gently on its own even with no one there. */
+.seal-glow{
+  position:absolute; inset:-40%; z-index:-1;
+  background: radial-gradient(circle at var(--seal-x) var(--seal-y),
+              rgba(212,169,78,.35), rgba(155,126,222,.22) 38%, transparent 68%);
+  animation: breathe 4.5s ease-in-out infinite;
+  transition: background .25s var(--ease-smooth);
+}
+.signature-seal:hover .seal-glow{ animation-duration:2.4s; }
+.signature-seal:hover{ transform:translateY(-2px); }
+.seal-made{
+  font-size:1rem; font-weight:600; letter-spacing:.06em;
+  color:var(--text-1);
+  transition: letter-spacing var(--dur-slow) var(--ease-smooth);
+}
+.signature-seal:hover .seal-made{ letter-spacing:.09em; }
+.seal-made span{
+  background:var(--grad-signature); background-size:200% auto;
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
+}
+.seal-made i{ font-style:normal; color:var(--text-3); margin:0 8px; opacity:.6; }
+.seal-whisper{
+  margin-top:14px; font-size:.82rem; font-style:italic;
+  color:var(--text-2); opacity:.5;
+  transition: opacity var(--dur-slow) var(--ease-smooth), transform var(--dur-slow) var(--ease-smooth);
+  min-height:1.4em;
+}
+.signature-seal:hover .seal-whisper{ opacity:.85; transform:translateY(-1px); }
+
+.footer-bottom{
+  position:relative; z-index:1;
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:10px;
+  padding-block:26px;
+  font-size:.82rem; color:var(--text-3);
+  text-align:center;
+}
+
+/* ============================================================================
+   16. FLOATING CONTROLS — the "View Source Code" and "back to top" buttons
+   that float in the corner of the screen. They're pinned with a distance
+   that GROWS a little on bigger screens but is capped with clamp(), so
+   on an ultrawide monitor or a TV they stay near the content instead of
+   drifting off into empty space at the raw edge of the screen.
+   ========================================================================= */
+.fab-stack{
+  position:fixed;
+  right: clamp(16px, 3vw, 44px);
+  bottom: clamp(16px, 3vw, 40px);
+  z-index:400;
+  display:flex; flex-direction:column; align-items:flex-end; gap:12px;
+}
+.fab{
+  display:flex; align-items:center; gap:9px;
+  padding:13px 20px 13px 16px;
+  border-radius:var(--radius-pill);
+  background:var(--ink-raised-2);
+  border:1px solid var(--glass-border);
+  box-shadow:var(--shadow-2);
+  color:var(--text-1); font-weight:600; font-size:.88rem;
+  transition: transform var(--dur-fast) var(--ease-elastic), box-shadow var(--dur-base), opacity var(--dur-base), visibility var(--dur-base);
+}
+.fab:hover{ transform:translateY(-4px) scale(1.03); box-shadow:var(--shadow-3), var(--glow-violet); }
+.fab svg{ width:18px; height:18px; }
+#backToTop{
+  opacity:0; visibility:hidden; transform:translateY(10px);
+  padding:13px; border-radius:50%;
+}
+#backToTop.show{ opacity:1; visibility:visible; transform:translateY(0); }
+
+/* ============================================================================
+   17. SOURCE CODE VIEWER (MODAL) — opens over everything when the FAB is
+   pressed. We show/hide it with opacity + visibility (never display:none
+   fighting with display:flex elsewhere) so there is exactly ONE flag
+   controlling whether it's on screen, and the fade can animate smoothly.
+   ========================================================================= */
+.modal-overlay{
+  position:fixed; inset:0; z-index:900;
+  display:flex; align-items:center; justify-content:center;
+  padding:20px;
+  background:rgba(10,9,14,.6);
+  opacity:0; visibility:hidden;
+  /* Deliberately NOT transitioning "visibility" here (only opacity) — see
+     the long comment beside openSourceModal()/closeSourceModal() in the
+     script for why that matters for reliably focusing the modal. */
+  transition: opacity var(--dur-base) var(--ease-smooth);
+}
+@supports (backdrop-filter:blur(1px)){ .modal-overlay{ backdrop-filter:blur(6px); } }
+.modal-overlay.active{ opacity:1; }
+.modal-box{
+  width:100%; max-width:840px; max-height:min(84vh, 760px);
+  background:var(--ink-raised-2);
+  border:1px solid var(--glass-border);
+  border-radius:var(--radius-l);
+  box-shadow:var(--shadow-3);
+  display:flex; flex-direction:column;
+  transform:scale(.92) translateY(16px);
+  transition: transform var(--dur-base) var(--ease-out);
+  overflow:hidden;
+}
+.modal-overlay.active .modal-box{ transform:scale(1) translateY(0); }
+.modal-header{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:20px 22px; border-bottom:1px solid var(--line); flex-shrink:0;
+}
+.modal-header h2{ font-size:1.15rem; display:flex; align-items:center; gap:10px; }
+.modal-close{
+  width:38px; height:38px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:var(--glass-fill); border:1px solid var(--glass-border);
+  transition:transform var(--dur-fast) var(--ease-elastic), background var(--dur-fast);
+}
+.modal-close:hover{ transform:rotate(90deg) scale(1.06); background:#E2685F; color:#fff; }
+
+.modal-stats{
+  display:grid; grid-template-columns:repeat(4,1fr); gap:10px;
+  padding:16px 22px; flex-shrink:0;
+}
+.stat-pill{
+  text-align:center; padding:10px 6px; border-radius:var(--radius-s);
+  background:var(--glass-fill); border:1px solid var(--glass-border);
+}
+.stat-pill b{ display:block; font-size:1.2rem; color:var(--text-1); font-variant-numeric:tabular-nums; }
+.stat-pill span{ font-size:.72rem; color:var(--text-3); }
+.stat-pill.comments b{ color:var(--teal-soft); }
+.stat-pill.code b{ color:var(--gold); }
+
+.modal-toolbar{
+  display:flex; flex-wrap:wrap; gap:8px;
+  padding:0 22px 16px; flex-shrink:0;
+}
+.tool-btn{
+  display:flex; align-items:center; gap:7px;
+  padding:9px 15px; border-radius:var(--radius-pill);
+  background:var(--glass-fill); border:1px solid var(--glass-border);
+  font-size:.82rem; font-weight:600; color:var(--text-1);
+  transition: all var(--dur-fast) var(--ease-smooth);
+}
+.tool-btn:hover{ border-color:var(--gold); transform:translateY(-2px); }
+.tool-btn svg{ width:15px; height:15px; }
+.tool-btn.on{ background:var(--grad-signature); color:#14121C; border-color:transparent; }
+
+.code-viewport{
+  flex:1; overflow:auto; position:relative;
+  background:var(--ink); margin:0 22px 22px; border-radius:var(--radius-s);
+  border:1px solid var(--line);
+}
+.code-inner{
+  font-family: ui-monospace, "SF Mono", "Cascadia Code", "Consolas", "Courier New", monospace;
+  font-size:.8rem; line-height:1.65;
+  padding:16px 0;
+}
+.code-line{ display:flex; white-space:pre; }
+.code-line .ln{
+  flex-shrink:0; width:48px; text-align:right; padding-right:16px;
+  color:var(--text-3); opacity:.5; user-select:none;
+}
+.code-line .lc{ padding-right:20px; color:var(--text-1); }
+.code-line.is-comment .lc{ color:var(--text-3); font-style:italic; }
+/* These two toggles flip a class on the WHOLE container once, rather than
+   on every single line — much less work for the browser than touching
+   thousands of individual line elements every time you click a toggle. */
+#codeInner.hide-comments .code-line.is-comment{ display:none; }
+#codeInner.no-line-numbers .ln{ display:none; }
+.tok-tag{ color:var(--teal-soft); }
+.tok-attr{ color:var(--gold-soft); }
+.tok-str{ color:#9CDA8E; }
+.tok-kw{ color:var(--violet-soft); }
+.tok-num{ color:#E7A65C; }
+.code-fade{
+  position:sticky; bottom:0; left:0; right:0; height:70px;
+  background:linear-gradient(to bottom, transparent, var(--ink));
+  display:flex; align-items:flex-end; justify-content:center; padding-bottom:14px;
+  pointer-events:none;
+}
+.code-fade .btn, .code-fade .tool-btn{ pointer-events:auto; }
+.code-fade.gone{ display:none; }
+
+/* ============================================================================
+   18. TOASTS — small confirmation notes ("Copied successfully!", "Booking
+   received") that slide in from the corner and quietly remove themselves.
+   ========================================================================= */
+.toast-stack{
+  position:fixed; top:20px; left:50%; transform:translateX(-50%);
+  z-index:999; display:flex; flex-direction:column; gap:10px;
+  width:min(92vw, 360px);
+}
+.toast{
+  display:flex; align-items:center; gap:10px;
+  padding:14px 18px; border-radius:var(--radius-m);
+  background:var(--ink-raised-2); border:1px solid var(--glass-border);
+  box-shadow:var(--shadow-3);
+  font-size:.88rem; font-weight:600; color:var(--text-1);
+  animation: fadeInDown .45s var(--ease-out) both;
+}
+.toast.leaving{ animation: toastOut .35s var(--ease-smooth) forwards; }
+@keyframes toastOut{ to{ opacity:0; transform:translateY(-14px) scale(.95); } }
+.toast .t-dot{
+  width:22px; height:22px; border-radius:50%; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; font-size:.75rem;
+  background:var(--grad-signature); color:#14121C;
+}
+
+/* Scroll progress bar pinned to the very top edge of the viewport */
+.scroll-progress{
+  position:fixed; top:0; left:0; height:3px; width:0%;
+  background:var(--grad-signature); z-index:1000;
+  transition: width .1s linear;
+}
+
+/* A very soft glow that follows the mouse on desktop only — purely
+   decorative, purely optional, and switched off automatically for touch
+   devices and reduced-motion users by the JS that creates it. */
+.cursor-glow{
+  position:fixed; width:340px; height:340px; border-radius:50%;
+  background:radial-gradient(circle, rgba(155,126,222,.10), transparent 70%);
+  pointer-events:none; z-index:2; transform:translate(-50%,-50%);
+  left:var(--pointer-x); top:var(--pointer-y);
+  transition:opacity .4s; opacity:0;
+}
+.cursor-glow.show{ opacity:1; }
+
+.offline-banner{
+  position:fixed; left:0; right:0; bottom:0; z-index:998;
+  background:var(--violet); color:#14121C; text-align:center;
+  padding:11px; font-size:.86rem; font-weight:600;
+  transform:translateY(100%); transition:transform var(--dur-base) var(--ease-smooth);
+}
+.offline-banner.show{ transform:translateY(0); }
+
+.badge-live{
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:.72rem; font-weight:700; color:var(--gold);
+  padding:5px 11px; border-radius:var(--radius-pill);
+  border:1px solid var(--glass-border);
+}
+.badge-live:hover{ animation:glitch .3s linear; }
+
+/* ============================================================================
+   19. RESPONSIVE BREAKPOINTS — this is the part that makes the page work
+   on EVERYTHING: huge desktop monitors, laptops, tablets, phones, and
+   foldables. We write the page for small screens by default (a "mobile
+   first" mindset baked into the base rules above), then these queries
+   ADD more columns / more space back in as the screen grows.
+   A note on very large screens (smart TVs, ultra-wide monitors): the
+   ".wrap" max-width above already keeps the actual content from
+   stretching edge to edge forever, so no extra query is needed for them.
+   ========================================================================= */
+
+/* ---- Tablets & small laptops ---- */
+@media (max-width:1024px){
+  .hero .wrap{ grid-template-columns:1fr; }
+  .orbit-stage{ max-width:340px; margin-top:20px; }
+  .service-grid{ grid-template-columns:repeat(3,1fr); }
+  .service-tile.featured{ grid-column:span 2; grid-row:span 1; }
+  .booking-grid{ grid-template-columns:1fr; }
+  .how-steps{ grid-template-columns:repeat(2,1fr); row-gap:40px; }
+  .how-path{ display:none; }
+  .footer-grid{ grid-template-columns:1fr 1fr; }
+}
+
+/* ---- Phones & narrow tablets ---- */
+@media (max-width:768px){
+  .nav-links{
+    position:fixed; top:0; right:0; bottom:0;
+    width:min(78vw, 320px);
+    flex-direction:column; align-items:stretch;
+    padding:100px 24px 24px;
+    background:var(--ink-raised-2);
+    border-left:1px solid var(--glass-border);
+    box-shadow:var(--shadow-3);
+    transform:translateX(100%);
+    transition:transform var(--dur-base) var(--ease-smooth);
+    gap:4px;
+  }
+  .nav-links.open{ transform:translateX(0); }
+  .nav-links a{ padding:14px 16px; font-size:1.02rem; }
+  .nav-toggle{ display:flex; }
+
+  .stats-panel{ grid-template-columns:repeat(2,1fr); row-gap:22px; }
+  .stat-item:nth-child(3){ border-left:none; }
+
+  .service-grid{ grid-template-columns:repeat(2,1fr); }
+  .service-tile.featured{ grid-column:span 2; }
+  .services-head{ flex-direction:column; align-items:flex-start; }
+
+  .how-steps{ grid-template-columns:1fr; gap:28px; }
+  .form-row{ grid-template-columns:1fr; gap:0; }
+
+  .testi-card{ flex-basis:82vw; }
+
+  .footer-grid{ grid-template-columns:1fr 1fr; gap:28px 20px; }
+  .footer-about{ grid-column:span 2; }
+
+  .fab span.fab-label{ display:none; }
+  .fab{ padding:14px; border-radius:50%; }
+
+  .modal-stats{ grid-template-columns:repeat(2,1fr); row-gap:10px; }
+  .cursor-glow{ display:none; }  /* cursors don't exist on touch screens */
+}
+
+/* ---- Small phones ---- */
+@media (max-width:420px){
+  :root{ --gutter: 18px; }
+  .service-grid{ grid-template-columns:1fr 1fr; }
+  .service-tile{ padding:16px; }
+  .footer-grid{ grid-template-columns:1fr; }
+  .footer-about{ grid-column:span 1; }
+  .hero-trust{ gap:16px; }
+  .modal-box{ max-height:92vh; }
+  .modal-stats{ grid-template-columns:repeat(2,1fr); }
+}
+
+/* ---- Foldables / very narrow (Galaxy Fold style, ~280px) ---- */
+@media (max-width:300px){
+  .service-grid{ grid-template-columns:1fr; }
+  .stats-panel{ grid-template-columns:1fr 1fr; }
+}
+
+/* ---- Landscape phones (short viewport height) — keep the hero from
+   forcing an awkward amount of scrolling before any content shows ---- */
+@media (max-height:480px) and (orientation:landscape){
+  .hero{ padding-top:110px; padding-bottom:50px; }
+  .orbit-stage{ max-width:220px; }
+}
+
+/* ---- Large screens / smart TVs: let content breathe a little more,
+   the container max-width already prevents endless stretching ---- */
+@media (min-width:1600px){
+  html{ font-size:17.5px; }
+}
+
+/* ---- Print: nobody prints a booking app, but if they try, don't hand
+   them a wall of black background ---- */
+@media print{
+  .navbar, .fab-stack, .cursor-glow, .scroll-progress, .modal-overlay, .toast-stack{ display:none !important; }
+  body{ background:#fff; color:#000; }
+}
+</style>
+</head>
+<body>
+
+<!-- Skip link: the first stop for anyone tabbing through with a keyboard -->
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- Thin bar across the very top that fills up as you scroll down the page -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- A soft light that follows the mouse on desktop (JS turns this on/off) -->
+<div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
+
+<!-- Dims the page behind the open mobile menu; tapping it closes the menu -->
+<div class="nav-backdrop" id="navBackdrop"></div>
+
+<!-- ============================== NAVBAR ============================== -->
+<header class="navbar" id="navbar">
+  <div class="wrap">
+    <a href="#home" class="brand">
+      <span class="brand-mark" aria-hidden="true">🏡</span>
+      HomeSeva
+    </a>
+
+    <nav class="nav-links" id="navLinks" aria-label="Primary">
+      <a href="#home">Home</a>
+      <a href="#services">Services</a>
+      <a href="#how">How it works</a>
+      <a href="#testimonials">Stories</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <div class="nav-actions">
+      <button class="btn btn-primary btn-sm" id="navBookBtn" style="display:none">Book now</button>
+      <button class="theme-toggle" id="themeToggle" aria-label="Switch between dark and light theme" aria-pressed="false">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.4M12 19.1v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5Z"/></svg>
+      </button>
+      <button class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ============================== HERO ============================== -->
+  <section class="hero" id="home">
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="section-tag">Serving 40+ neighbourhoods</span>
+        <h1>Home help you can actually trust.</h1>
+        <p class="hero-sub">From a leaking tap to a home-style tiffin, book a background-checked professional in minutes — and always know exactly who's coming to your door.</p>
+        <p class="type-line"><span id="typeTarget"></span><span class="type-caret" aria-hidden="true"></span></p>
+
+        <div class="hero-cta">
+          <button class="btn btn-primary" id="heroBookBtn">Book a service</button>
+          <a href="#how" class="btn btn-ghost">See how it works</a>
+        </div>
+
+        <div class="hero-trust">
+          <div class="trust-item"><span class="star-row" aria-hidden="true">★★★★★</span> <strong>4.9</strong> average rating</div>
+          <div class="trust-item"><strong>2,300+</strong> verified pros</div>
+          <div class="trust-item"><strong>40+</strong> neighbourhoods</div>
+        </div>
+      </div>
+
+      <div class="orbit-stage" aria-hidden="true">
+        <div class="orbit-ring r1"></div>
+        <div class="orbit-ring r2"></div>
+        <div class="orbit-blob"></div>
+        <div class="orbit-core">
+          <span class="num">16</span>
+          <span class="lbl">trusted service categories</span>
+        </div>
+        <div class="orbit-chip c1">🔧</div>
+        <div class="orbit-chip c2">💡</div>
+        <div class="orbit-chip c3">🍱</div>
+        <div class="orbit-chip c4">🧹</div>
+        <div class="orbit-chip c5">🚕</div>
+      </div>
+    </div>
+
+    <div class="scroll-cue" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="mouse"></div>
+    </div>
+  </section>
+
+  <!-- ============================== STATS ============================== -->
+  <section class="stats-strip">
+    <div class="wrap">
+      <div class="stats-panel glass reveal r-zoom" id="statsPanel">
+        <div class="stat-item">
+          <div class="stat-num" data-count="52000">0</div>
+          <div class="stat-lbl">homes served</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" data-count="2300">0</div>
+          <div class="stat-lbl">verified professionals</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" data-count="16">0</div>
+          <div class="stat-lbl">service categories</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num" data-count="18" data-suffix=" min">0</div>
+          <div class="stat-lbl">average response time</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ============================== SERVICES ============================== -->
+  <section class="section" id="services">
+    <div class="wrap">
+      <div class="services-head">
+        <div class="section-head reveal">
+          <span class="section-tag">Home Services</span>
+          <h2>Everything your home needs, in one place.</h2>
+          <p>Sixteen categories, one simple booking flow. Search for what you need, or browse by type.</p>
+        </div>
+      </div>
+
+      <div class="service-controls reveal">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input type="text" id="serviceSearch" placeholder="Search a service — try 'cook' or 'tap'" aria-label="Search services">
+        </div>
+        <div class="filter-pills" id="filterPills" role="tablist" aria-label="Filter services by category">
+          <button class="filter-pill active" data-cat="all" role="tab" aria-selected="true">All services</button>
+          <button class="filter-pill" data-cat="repair" role="tab" aria-selected="false">Repair &amp; technical</button>
+          <button class="filter-pill" data-cat="care" role="tab" aria-selected="false">Home &amp; personal care</button>
+          <button class="filter-pill" data-cat="everyday" role="tab" aria-selected="false">Food &amp; transport</button>
+        </div>
+      </div>
+
+      <div class="service-grid stagger reveal" id="serviceGrid">
+
+        <button class="service-tile featured" data-cat="repair" data-name="plumber leaking tap pipe fitting">
+          <span class="t-icon">🔧</span>
+          <div class="t-body">
+            <h3>Plumber</h3>
+            <p>Leaks, blocked drains, and pipe fittings — fixed the same day.</p>
+          </div>
+          <span class="t-cat">Repair &amp; technical</span>
+          <span class="t-arrow" aria-hidden="true">↗</span>
+        </button>
+
+        <button class="service-tile featured" data-cat="repair" data-name="electrician wiring switch fuse">
+          <span class="t-icon">💡</span>
+          <div class="t-body">
+            <h3>Electrician</h3>
+            <p>Wiring, switchboards, and safety checks from a licensed hand.</p>
+          </div>
+          <span class="t-cat">Repair &amp; technical</span>
+          <span class="t-arrow" aria-hidden="true">↗</span>
+        </button>
+
+        <button class="service-tile featured" data-cat="care" data-name="domestic helper cleaning maid housework">
+          <span class="t-icon">🧹</span>
+          <div class="t-body">
+            <h3>Domestic Helper</h3>
+            <p>Daily or weekly cleaning and upkeep, from someone you'll come to know and trust.</p>
+          </div>
+          <span class="t-cat">Home &amp; personal care</span>
+          <span class="t-arrow" aria-hidden="true">↗</span>
+        </button>
+
+        <button class="service-tile featured" data-cat="everyday" data-name="tiffin service homestyle meals lunch box">
+          <span class="t-icon">🍱</span>
+          <div class="t-body">
+            <h3>Tiffin Service</h3>
+            <p>Home-style meals, delivered on a schedule that fits your day.</p>
+          </div>
+          <span class="t-cat">Food &amp; transport</span>
+          <span class="t-arrow" aria-hidden="true">↗</span>
+        </button>
+
+        <button class="service-tile" data-cat="repair" data-name="washing machine repair spin drain">
+          <span class="t-icon">🌀</span>
+          <div class="t-body"><h3>Washing Machine Repair</h3><p>Spins, drains, and dries again.</p></div>
+          <span class="t-cat">Repair</span>
+        </button>
+
+        <button class="service-tile" data-cat="repair" data-name="refrigerator repair fridge cooling">
+          <span class="t-icon">❄️</span>
+          <div class="t-body"><h3>Refrigerator Repair</h3><p>Cooling problems, diagnosed and sorted.</p></div>
+          <span class="t-cat">Repair</span>
+        </button>
+
+        <button class="service-tile" data-cat="care" data-name="beautician salon haircut facial">
+          <span class="t-icon">💇</span>
+          <div class="t-body"><h3>Beautician</h3><p>Salon-quality care, brought to your door.</p></div>
+          <span class="t-cat">Personal care</span>
+        </button>
+
+        <button class="service-tile" data-cat="everyday" data-name="taxi booking cab ride">
+          <span class="t-icon">🚕</span>
+          <div class="t-body"><h3>Taxi Booking</h3><p>A ride booked in seconds, whenever you need one.</p></div>
+          <span class="t-cat">Transport</span>
+        </button>
+
+        <button class="service-tile extra-tile" data-cat="repair" data-name="led tv repair screen display">
+          <span class="t-icon">📺</span>
+          <div class="t-body"><h3>LED TV Repair</h3><p>Screen and sound issues, fixed at home.</p></div>
+          <span class="t-cat">Repair</span>
+        </button>
+
+        <button class="service-tile extra-tile" data-cat="repair" data-name="home technician general appliance">
+          <span class="t-icon">🛠️</span>
+          <div class="t-body"><h3>Home Technician</h3><p>General appliance trouble? One visit, one diagnosis.</p></div>
+          <span class="t-cat">Repair</span>
+        </button>
+
+        <button class="service-tile extra-tile" data-cat="repair" data-name="welder metal gate grill">
+          <span class="t-icon">🔥</span>
+          <div class="t-body"><h3>Welder</h3><p>Gates, grills, and metal repairs done properly.</p></div>
+          <span class="t-cat">Repair</span>
+        </button>
+
+        <button class="service-tile extra-tile" data-cat="care" data-name="caregiver caretaker elderly patient">
+          <span class="t-icon">🧑‍⚕️</span>
+          <div class="t-body"><h3>Caregiver / Caretaker</h3><p>Gentle, attentive care for a parent or loved one.</p></div>
+          <span class="t-cat">Personal care</span>
+        </button>
+
+        <button class="service-tile extra-tile" data-cat="care" data-name="painter wall paint">
+          <span class="t-icon">🎨</span>
+          <div class="t-body"><h3>Painter</h3><p>Walls that feel new again, inside or out.</p></div>
+          <span class="t-cat">Home care</span>
+        </button>
+
+        <button class="service-tile extra-tile" data-cat="care" data-name="gardener garden lawn plants">
+          <span class="t-icon">🌿</span>
+          <div class="t-body"><h3>Gardener</h3><p>A garden that's genuinely cared for, not just cut.</p></div>
+          <span class="t-cat">Home care</span>
+        </button>
+
+        <button class="service-tile extra-tile" data-cat="everyday" data-name="professional cook chef kitchen">
+          <span class="t-icon">👨‍🍳</span>
+          <div class="t-body"><h3>Professional Cook</h3><p>Meals cooked fresh, right in your own kitchen.</p></div>
+          <span class="t-cat">Food</span>
+        </button>
+
+        <button class="service-tile extra-tile" data-cat="everyday" data-name="driver personal chauffeur">
+          <span class="t-icon">🚗</span>
+          <div class="t-body"><h3>Driver</h3><p>A reliable driver, on call whenever you are.</p></div>
+          <span class="t-cat">Transport</span>
+        </button>
+
+      </div>
+
+      <p class="no-results" id="noResults">
+        <span class="emoji" aria-hidden="true">🧭</span><br>
+        Nothing matched that search. Try a different word, or browse by category above.
+      </p>
+
+      <div class="services-more">
+        <button class="btn btn-ghost" id="viewMoreBtn">View more services ↓</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== HOW IT WORKS ============================== -->
+  <section class="section how-section" id="how">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="section-tag">How it works</span>
+        <h2>Booked in four simple steps.</h2>
+        <p>No back-and-forth calls, no guessing who's showing up.</p>
+      </div>
+
+      <div class="how-steps stagger reveal">
+        <div class="how-path" aria-hidden="true">
+          <svg viewBox="0 0 1000 10" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="howGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0" stop-color="#D4A94E"/>
+                <stop offset="0.5" stop-color="#9B7EDE"/>
+                <stop offset="1" stop-color="#4FB6C9"/>
+              </linearGradient>
+            </defs>
+            <path d="M0,5 L1000,5" pathLength="1000"/>
+            <path class="fill-path" d="M0,5 L1000,5" pathLength="1000"/>
+          </svg>
+        </div>
+
+        <div class="how-step">
+          <div class="how-num">1</div>
+          <h3>Tell us what you need</h3>
+          <p>Pick a service and describe the job in a line or two.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-num">2</div>
+          <h3>Pick a time that suits you</h3>
+          <p>Today, tomorrow, or a slot that fits your week.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-num">3</div>
+          <h3>A verified pro arrives</h3>
+          <p>You'll know their name and rating before they knock.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-num">4</div>
+          <h3>Pay once it's done</h3>
+          <p>No advance payments. Only pay when you're satisfied.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- ============================== BOOKING ============================== -->
+  <section class="section" id="book">
+    <div class="wrap booking-grid">
+      <div class="booking-aside reveal r-left">
+        <div class="section-head">
+          <span class="section-tag">My Services</span>
+          <h2>Ready when you are.</h2>
+          <p>Fill this in and we'll match you with a verified professional nearby. Most requests get a response within the hour.</p>
+        </div>
+
+        <div class="reassure-list">
+          <div class="reassure-item">
+            <span class="r-icon" aria-hidden="true">🪪</span>
+            <div><h4>Every professional is verified</h4><p>Identity-checked and background-checked before they ever get listed.</p></div>
+          </div>
+          <div class="reassure-item">
+            <span class="r-icon" aria-hidden="true">💬</span>
+            <div><h4>You'll know who's coming</h4><p>Name, photo, and rating shared with you before the visit.</p></div>
+          </div>
+          <div class="reassure-item">
+            <span class="r-icon" aria-hidden="true">↩️</span>
+            <div><h4>Not happy? We'll make it right</h4><p>Free follow-up visit if the job isn't done properly.</p></div>
+          </div>
+        </div>
+
+        <div class="ticker glass">
+          <span class="dot" aria-hidden="true"></span>
+          <span><strong>Rajeev</strong> in Sector 14 just booked a Plumber</span>
+        </div>
+      </div>
+
+      <div class="booking-card glass reveal r-right">
+        <form id="bookingForm" novalidate>
+          <div id="bookingFields">
+          <div class="form-row">
+            <div class="field">
+              <label for="fName">Full name</label>
+              <input type="text" id="fName" name="fName" autocomplete="name" placeholder="e.g. Ananya Sharma">
+              <span class="field-msg" id="fNameMsg"></span>
+            </div>
+            <div class="field">
+              <label for="fPhone">Phone number</label>
+              <input type="tel" id="fPhone" name="fPhone" autocomplete="tel" placeholder="10-digit mobile number">
+              <span class="field-msg" id="fPhoneMsg"></span>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="fService">Service needed</label>
+              <select id="fService" name="fService">
+                <option value="">Choose a service…</option>
+                <optgroup label="Repair & technical">
+                  <option>Plumber</option><option>Electrician</option>
+                  <option>Washing Machine Repair</option><option>Refrigerator Repair</option>
+                  <option>LED TV Repair</option><option>Home Technician</option><option>Welder</option>
+                </optgroup>
+                <optgroup label="Home & personal care">
+                  <option>Domestic Helper</option><option>Caregiver / Caretaker</option>
+                  <option>Beautician</option><option>Painter</option><option>Gardener</option>
+                </optgroup>
+                <optgroup label="Food & transport">
+                  <option>Tiffin Service</option><option>Professional Cook</option>
+                  <option>Taxi Booking</option><option>Driver</option>
+                </optgroup>
+              </select>
+              <span class="field-msg" id="fServiceMsg"></span>
+            </div>
+            <div class="field">
+              <label for="fDate">Preferred date</label>
+              <input type="date" id="fDate" name="fDate">
+              <span class="field-msg" id="fDateMsg"></span>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="fAddress">Address</label>
+            <input type="text" id="fAddress" name="fAddress" autocomplete="street-address" placeholder="House / flat, street, area">
+            <span class="field-msg" id="fAddressMsg"></span>
+          </div>
+
+          <div class="field">
+            <label for="fNotes">Anything we should know? (optional)</label>
+            <textarea id="fNotes" name="fNotes" placeholder="e.g. The tap in the kitchen has been dripping since Monday"></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary form-submit" id="bookingSubmit">Request this service</button>
+          </div><!-- /#bookingFields -->
+
+          <div class="booking-success" id="bookingSuccess" role="status" aria-live="polite">
+            <div class="success-check">
+              <svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="26"/><path d="M18 31l8 8 16-18"/></svg>
+            </div>
+            <h3>Request received!</h3>
+            <p>We're matching you with a verified professional — expect a call shortly.</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== TESTIMONIALS ============================== -->
+  <section class="section" id="testimonials">
+    <div class="wrap">
+      <div class="testi-head reveal">
+        <div class="section-head" style="margin-bottom:0">
+          <span class="section-tag">Real stories</span>
+          <h2>What neighbours are saying.</h2>
+        </div>
+        <div class="testi-arrows">
+          <button class="btn btn-icon btn-ghost" id="testiPrev" aria-label="Previous story">‹</button>
+          <button class="btn btn-icon btn-ghost" id="testiNext" aria-label="Next story">›</button>
+        </div>
+      </div>
+
+      <div class="testi-track" id="testiTrack">
+        <div class="testi-card"><span class="testi-quote" aria-hidden="true">"</span>
+          <p>Our domestic helper has been with us for eight months now. She knows exactly how we like things — I don't even have to ask anymore.</p>
+          <div class="testi-who"><div class="testi-avatar">M</div><div><div class="testi-name">Meera S.</div><div class="testi-loc">Andheri</div></div></div>
+        </div>
+        <div class="testi-card"><span class="testi-quote" aria-hidden="true">"</span>
+          <p>Power tripped at 9pm on a weeknight. An electrician was at my door in twenty-five minutes. I didn't expect that.</p>
+          <div class="testi-who"><div class="testi-avatar">R</div><div><div class="testi-name">Rohit Khanna</div><div class="testi-loc">Sector 21</div></div></div>
+        </div>
+        <div class="testi-card"><span class="testi-quote" aria-hidden="true">"</span>
+          <p>We travel a lot for work, so the tiffin service has honestly kept us eating properly. It tastes like someone's mother made it.</p>
+          <div class="testi-who"><div class="testi-avatar">P</div><div><div class="testi-name">Priya &amp; Arjun</div><div class="testi-loc">Koramangala</div></div></div>
+        </div>
+        <div class="testi-card"><span class="testi-quote" aria-hidden="true">"</span>
+          <p>Finding someone patient to look after my father wasn't easy. The caregiver we found here treats him like family, not a job.</p>
+          <div class="testi-who"><div class="testi-avatar">S</div><div><div class="testi-name">Sunita Devi</div><div class="testi-loc">Model Town</div></div></div>
+        </div>
+        <div class="testi-card"><span class="testi-quote" aria-hidden="true">"</span>
+          <p>The painter finished our whole living room in a day, and actually moved the furniture back where it belonged. Small thing, but it mattered.</p>
+          <div class="testi-who"><div class="testi-avatar">V</div><div><div class="testi-name">Vikram T.</div><div class="testi-loc">Powai</div></div></div>
+        </div>
+        <div class="testi-card"><span class="testi-quote" aria-hidden="true">"</span>
+          <p>Pipe burst at midnight and I panicked. Someone picked up the phone in under a minute and had a plumber to me before 1am.</p>
+          <div class="testi-who"><div class="testi-avatar">F</div><div><div class="testi-name">Farah Sheikh</div><div class="testi-loc">Bandra</div></div></div>
+        </div>
+      </div>
+      <div class="testi-track-progress"><div class="testi-track-progress-fill" id="testiProgress"></div></div>
+    </div>
+  </section>
+
+  <!-- ============================== FAQ ============================== -->
+  <section class="section" id="faq">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="section-tag">Good to know</span>
+        <h2>Questions people usually ask.</h2>
+      </div>
+
+      <div class="faq-list reveal">
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">How fast can someone reach me?<span class="plus" aria-hidden="true"></span></button>
+          <div class="faq-a"><p>Most requests get a confirmed professional within 30–60 minutes, and urgent jobs like electrical or plumbing issues are prioritised.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Are the professionals actually verified?<span class="plus" aria-hidden="true"></span></button>
+          <div class="faq-a"><p>Yes. Every professional completes an identity check and a background check before they're allowed to accept a single booking.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">What if I'm not happy with the work?<span class="plus" aria-hidden="true"></span></button>
+          <div class="faq-a"><p>Tell us within 48 hours and we'll send someone back to make it right, at no extra cost to you.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">How do I pay?<span class="plus" aria-hidden="true"></span></button>
+          <div class="faq-a"><p>Cash, card, or UPI, paid directly to the professional once the job is complete. Nothing is charged upfront.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Can I book on behalf of a parent?<span class="plus" aria-hidden="true"></span></button>
+          <div class="faq-a"><p>Yes — use your own number when booking and mention their address in the notes. We'll call you first to confirm details.</p></div>
+        </div>
+        <div class="faq-item">
+          <button class="faq-q" aria-expanded="false">Is there a cancellation fee?<span class="plus" aria-hidden="true"></span></button>
+          <div class="faq-a"><p>None, as long as you cancel at least two hours before the scheduled visit.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+<!-- ============================== FOOTER ============================== -->
+<footer class="site-footer">
+  <div class="footer-noise" aria-hidden="true"></div>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-about">
+        <a href="#home" class="brand"><span class="brand-mark" aria-hidden="true">🏡</span> HomeSeva</a>
+        <p>A home-services app built on one idea: you should always know exactly who's walking through your door.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#services">Home Services</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#testimonials">Stories</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Popular services</h4>
+        <ul>
+          <li><a href="#services">Plumber</a></li>
+          <li><a href="#services">Electrician</a></li>
+          <li><a href="#services">Tiffin Service</a></li>
+          <li><a href="#services">Domestic Helper</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Get in touch</h4>
+        <ul>
+          <li><a href="#book">Book a service</a></li>
+          <li><a href="tel:1800000000">1800-000-000</a></li>
+          <li><a href="mailto:support@homeseva.example">support@homeseva.example</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-divider"></div>
+
+    <!-- The signature: a quiet, glowing plate that notices your cursor -->
+    <div class="signature-seal" id="signatureSeal">
+      <div class="seal-glow" aria-hidden="true"></div>
+      <div class="seal-content">
+        <p class="seal-made">Made by <span>avneetkumar.corporate</span><i>|</i><span>avneetkumarindia</span><i>|</i><span>Avneet.kumar</span></p>
+        <p class="seal-whisper" id="sealWhisper">Some things are built to function. This was built to feel.</p>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>© <span id="yearNow">2026</span> HomeSeva. All rights reserved.</span>
+      <span aria-hidden="true">·</span>
+      <span class="badge-live">🟢 Built as one self-contained file</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================== FLOATING CONTROLS ============================== -->
+<div class="fab-stack">
+  <button id="backToTop" class="fab" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+  <button id="sourceBtn" class="fab">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m8 9-4 3 4 3M16 9l4 3-4 3M13 6l-2 12"/></svg>
+    <span class="fab-label">View Source Code</span>
+  </button>
+</div>
+
+<!-- ============================== SOURCE CODE VIEWER MODAL ============================== -->
+<div class="modal-overlay" id="sourceModal" role="dialog" aria-modal="true" aria-labelledby="sourceModalTitle">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2 id="sourceModalTitle">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m8 9-4 3 4 3M16 9l4 3-4 3M13 6l-2 12"/></svg>
+        Source Code Viewer
+      </h2>
+      <button class="modal-close" id="modalClose" aria-label="Close">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="modal-stats" id="modalStats">
+      <div class="stat-pill"><b id="statTotal">0</b><span>Total lines</span></div>
+      <div class="stat-pill code"><b id="statCode">0</b><span>Code lines</span></div>
+      <div class="stat-pill comments"><b id="statComments">0</b><span>Comment lines</span></div>
+      <div class="stat-pill"><b id="statEmpty">0</b><span>Empty lines</span></div>
+    </div>
+
+    <div class="modal-toolbar">
+      <button class="tool-btn" id="btnCopy">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg>
+        Copy Code
+      </button>
+      <button class="tool-btn" id="btnDownload">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 19h16"/></svg>
+        Download Code
+      </button>
+      <button class="tool-btn" id="btnToggleComments">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span id="commentsLabel">Hide Comments</span>
+      </button>
+      <button class="tool-btn" id="btnToggleNums">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h1M4 12h1M4 18h1M9 6h11M9 12h11M9 18h11"/></svg>
+        Line Numbers
+      </button>
+    </div>
+
+    <div class="code-viewport" id="codeViewport">
+      <div class="code-inner" id="codeInner"></div>
+      <div class="code-fade" id="codeFade">
+        <button class="btn btn-primary btn-sm" id="btnViewFull">View Full Code</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Toast notifications appear here -->
+<div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+<!-- Shown automatically if the visitor's connection drops -->
+<div class="offline-banner" id="offlineBanner">You're offline — some actions may not work until you're back online.</div>
+
+<script>
+'use strict';
+/* ============================================================================
+  ALL THE JAVASCRIPT LIVES HERE. Think of everything above as the page's
+  skeleton (HTML) and skin (CSS) — this is what makes it actually DO things
+  when you click, type, or scroll. It's organised into small named
+  functions, each responsible for exactly one feature, and every one of
+  them is switched on, in a clear order, at the very bottom of this file
+  in a function called initAll(). Reading top to bottom, in order:
+
+    1.  Tiny helper functions used everywhere else
+    2.  Theme (dark/light) switching
+    3.  Mobile menu
+    4.  Button ripple effect
+    5.  Scroll progress bar, navbar shrink, back-to-top button
+    6.  Cursor glow (desktop only)
+    7.  Scroll-reveal animations + animated counters
+    8.  Services: search, category filter, "view more"
+    9.  Typewriter hero text
+    10. Booking form validation + submit
+    11. Testimonials strip
+    12. FAQ accordion
+    13. Source Code Viewer (the biggest one)
+    14. Footer signature seal + toasts + PWA bits
+    15. initAll() — turns everything on, in order, once the page is ready
+  ============================================================================ */
+
+/* ---------------------------------------------------------------------------
+   1. HELPERS
+   Small functions with one job each, reused all over the file below.
+   ------------------------------------------------------------------------ */
+function qs(sel, ctx){ return (ctx || document).querySelector(sel); }
+function qsa(sel, ctx){ return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
+
+/* Turns text that might contain <, >, & etc into a SAFE version that a
+   browser will display as plain text instead of running it as HTML. This
+   matters every single time we take a piece of text and insert it into
+   the page with innerHTML — skipping this step is how "script injection"
+   security bugs happen. We always escape FIRST, then add our own trusted
+   formatting (like <span> tags for colours) AFTER, so nothing the browser
+   text itself contains can break out and become real HTML. */
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/* Waits until someone STOPS typing/resizing for a moment before running
+   the given function, instead of running it on every single keystroke —
+   much kinder to performance for things like live search. */
+function debounce(fn, wait){
+  var t;
+  return function(){
+    var args = arguments, ctx = this;
+    clearTimeout(t);
+    t = setTimeout(function(){ fn.apply(ctx, args); }, wait);
+  };
+}
+
+/* localStorage can be unavailable (private browsing, strict privacy
+   settings, some file:// situations) — every read/write is wrapped in
+   try/catch so a storage failure never breaks the rest of the page. */
+function safeGet(key){ try{ return window.localStorage.getItem(key); } catch(e){ return null; } }
+function safeSet(key, val){ try{ window.localStorage.setItem(key, val); return true; } catch(e){ return false; } }
+
+var prefersReducedMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+var isTouchDevice = !!(window.matchMedia && window.matchMedia('(hover: none), (pointer: coarse)').matches);
+
+/* ---------------------------------------------------------------------------
+   2. THEME — reads any saved choice, falls back to the visitor's system
+   preference, and lets the toggle button flip between the two.
+   ------------------------------------------------------------------------ */
+function initTheme(){
+  var root = document.documentElement;
+  var toggle = qs('#themeToggle');
+  if(!toggle) return;
+
+  var stored = safeGet('homeseva:theme');
+  var systemLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+  var initial = (stored === 'light' || stored === 'dark') ? stored : (systemLight ? 'light' : 'dark');
+
+  root.setAttribute('data-theme', initial);
+  toggle.setAttribute('aria-pressed', String(initial === 'light'));
+
+  toggle.addEventListener('click', function(){
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    toggle.setAttribute('aria-pressed', String(next === 'light'));
+    safeSet('homeseva:theme', next);
+  });
+}
+
+/* ---------------------------------------------------------------------------
+   3. MOBILE MENU
+   ------------------------------------------------------------------------ */
+function initMobileNav(){
+  var btn = qs('#navToggle');
+  var links = qs('#navLinks');
+  var backdrop = qs('#navBackdrop');
+  if(!btn || !links) return;
+
+  function closeMenu(){
+    links.classList.remove('open');
+    btn.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-label', 'Open menu');
+    if(backdrop) backdrop.classList.remove('show');
+  }
+  function toggleMenu(){
+    var willOpen = !links.classList.contains('open');
+    links.classList.toggle('open', willOpen);
+    btn.classList.toggle('open', willOpen);
+    btn.setAttribute('aria-expanded', String(willOpen));
+    btn.setAttribute('aria-label', willOpen ? 'Close menu' : 'Open menu');
+    if(backdrop) backdrop.classList.toggle('show', willOpen);
+  }
+  btn.addEventListener('click', toggleMenu);
+  if(backdrop) backdrop.addEventListener('click', closeMenu);
+  qsa('a', links).forEach(function(a){ a.addEventListener('click', closeMenu); });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape') closeMenu();
+  });
+}
+
+/* ---------------------------------------------------------------------------
+   4. BUTTON RIPPLE — a small circle that blooms out from exactly where a
+   button was clicked or tapped, then removes itself once the animation
+   finishes (so we never leave stray invisible elements behind).
+   ------------------------------------------------------------------------ */
+function initRipple(){
+  if(prefersReducedMotion) return;
+  document.addEventListener('click', function(e){
+    var btn = e.target.closest ? e.target.closest('.btn, .fab, .filter-pill, .tool-btn') : null;
+    if(!btn) return;
+    var rect = btn.getBoundingClientRect();
+    var size = Math.max(rect.width, rect.height) * 1.5;
+    var dot = document.createElement('span');
+    dot.className = 'ripple-dot';
+    dot.style.width = dot.style.height = size + 'px';
+    var originX = (typeof e.clientX === 'number' && e.clientX) ? e.clientX : rect.left + rect.width/2;
+    var originY = (typeof e.clientY === 'number' && e.clientY) ? e.clientY : rect.top + rect.height/2;
+    dot.style.left = (originX - rect.left - size/2) + 'px';
+    dot.style.top  = (originY - rect.top  - size/2) + 'px';
+    btn.appendChild(dot);
+    dot.addEventListener('animationend', function(){ dot.remove(); });
+    setTimeout(function(){ if(dot.parentNode) dot.remove(); }, 900); /* safety cleanup */
+  });
+}
+
+/* ---------------------------------------------------------------------------
+   5. SCROLL EFFECTS — progress bar, navbar shrink, back-to-top visibility.
+   All three only need to know "how far down the page are we", so they
+   share ONE scroll listener rather than three separate ones. The work is
+   wrapped in requestAnimationFrame so it's synced to the screen's own
+   refresh rate instead of firing dozens of times per scroll gesture.
+   ------------------------------------------------------------------------ */
+function initScrollFX(){
+  var progressBar = qs('#scrollProgress');
+  var navbar = qs('#navbar');
+  var backToTop = qs('#backToTop');
+  var ticking = false;
+
+  function update(){
+    var scrollTop = window.scrollY || document.documentElement.scrollTop || 0;
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    var pct = docHeight > 0 ? Math.min(100, (scrollTop / docHeight) * 100) : 0;
+    if(progressBar) progressBar.style.width = pct + '%';
+    if(navbar) navbar.classList.toggle('scrolled', scrollTop > 40);
+    if(backToTop) backToTop.classList.toggle('show', scrollTop > 480);
+    ticking = false;
+  }
+  window.addEventListener('scroll', function(){
+    if(!ticking){ requestAnimationFrame(update); ticking = true; }
+  }, {passive:true});
+  update();
+
+  if(backToTop){
+    backToTop.addEventListener('click', function(){
+      window.scrollTo({ top:0, behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+    });
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   6. CURSOR GLOW — a soft light that follows the mouse, desktop only.
+   Skipped entirely on touch devices (there's no "hover cursor" there) and
+   for visitors who've asked their system to reduce motion.
+   ------------------------------------------------------------------------ */
+function initCursorGlow(){
+  var glow = qs('#cursorGlow');
+  if(!glow || isTouchDevice || prefersReducedMotion) return;
+  var shown = false;
+  window.addEventListener('mousemove', function(e){
+    document.documentElement.style.setProperty('--pointer-x', e.clientX + 'px');
+    document.documentElement.style.setProperty('--pointer-y', e.clientY + 'px');
+    if(!shown){ glow.classList.add('show'); shown = true; }
+  }, {passive:true});
+  document.addEventListener('mouseleave', function(){ glow.classList.remove('show'); });
+}
+
+/* ---------------------------------------------------------------------------
+   7. SCROLL REVEALS + ANIMATED COUNTERS
+   An IntersectionObserver quietly watches elements and tells us the exact
+   moment one scrolls into view — far cheaper for the browser than checking
+   scroll position by hand on every single scroll event.
+   ------------------------------------------------------------------------ */
+function initRevealObserver(){
+  var targets = qsa('.reveal, .stagger');
+  if(!targets.length) return;
+  if(!('IntersectionObserver' in window) || prefersReducedMotion){
+    targets.forEach(function(t){ t.classList.add('in-view'); });
+    return;
+  }
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        obs.unobserve(entry.target);
+      }
+    });
+  }, { threshold:0.15, rootMargin:'0px 0px -60px 0px' });
+  targets.forEach(function(t){ obs.observe(t); });
+
+  /* The "how it works" connecting line draws itself the same way */
+  var pathEl = qs('.fill-path');
+  if(pathEl){
+    if(prefersReducedMotion){ pathEl.classList.add('in-view'); }
+    else if('IntersectionObserver' in window){
+      var pathObs = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(entry.isIntersecting){ pathEl.classList.add('in-view'); pathObs.unobserve(entry.target); }
+        });
+      }, {threshold:0.4});
+      pathObs.observe(pathEl);
+    } else { pathEl.classList.add('in-view'); }
+  }
+}
+
+function initCounters(){
+  var counters = qsa('.stat-num[data-count]');
+  if(!counters.length) return;
+
+  function animateCounter(el){
+    var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+    var suffix = el.getAttribute('data-suffix') || '';
+    if(prefersReducedMotion){ el.textContent = target.toLocaleString() + suffix; return; }
+    var duration = 1700, startTime = null;
+    function step(ts){
+      if(startTime === null) startTime = ts;
+      var progress = Math.min(1, (ts - startTime) / duration);
+      var eased = 1 - Math.pow(1 - progress, 3); /* ease-out cubic — fast start, gentle finish */
+      el.textContent = Math.floor(eased * target).toLocaleString() + suffix;
+      if(progress < 1) requestAnimationFrame(step);
+      else el.textContent = target.toLocaleString() + suffix;
+    }
+    requestAnimationFrame(step);
+  }
+
+  if(!('IntersectionObserver' in window)){ counters.forEach(animateCounter); return; }
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if(entry.isIntersecting){ animateCounter(entry.target); obs.unobserve(entry.target); }
+    });
+  }, { threshold:0.5 });
+  counters.forEach(function(c){ obs.observe(c); });
+}
+
+/* ---------------------------------------------------------------------------
+   8. SERVICES — live search, category filter, and "view more". A tile is
+   visible only when it matches BOTH the current search text AND the
+   current category — and separately, the eight "extra" tiles stay hidden
+   until either "View more" is pressed, or a search/filter is active
+   (because if someone searches for something that's behind that button,
+   they should still be able to find it).
+   ------------------------------------------------------------------------ */
+function initServices(){
+  var grid = qs('#serviceGrid');
+  if(!grid) return;
+  var tiles = qsa('.service-tile', grid);
+  var searchInput = qs('#serviceSearch');
+  var pills = qsa('.filter-pill');
+  var viewMoreBtn = qs('#viewMoreBtn');
+  var noResults = qs('#noResults');
+
+  var state = { query:'', category:'all', expanded:false };
+
+  function filterIsActive(){
+    return state.query.trim() !== '' || state.category !== 'all';
+  }
+
+  function applyVisibility(){
+    var anyVisible = false;
+    var active = filterIsActive();
+    tiles.forEach(function(tile){
+      var matchesCat = state.category === 'all' || tile.getAttribute('data-cat') === state.category;
+      var haystack = (tile.getAttribute('data-name') || '').toLowerCase();
+      var matchesQuery = state.query.trim() === '' || haystack.indexOf(state.query.trim().toLowerCase()) !== -1;
+      var matches = matchesCat && matchesQuery;
+      var isExtra = tile.classList.contains('extra-tile');
+      var visible = matches && (!isExtra || state.expanded || active);
+      tile.classList.toggle('hidden-tile', !visible);
+      if(visible) anyVisible = true;
+    });
+    if(noResults) noResults.classList.toggle('show', !anyVisible);
+    if(viewMoreBtn){
+      viewMoreBtn.style.display = active ? 'none' : '';
+      viewMoreBtn.textContent = state.expanded ? 'Show fewer services ↑' : 'View more services ↓';
+    }
+  }
+
+  if(searchInput){
+    searchInput.addEventListener('input', debounce(function(){
+      state.query = searchInput.value;
+      applyVisibility();
+    }, 160));
+  }
+
+  pills.forEach(function(pill){
+    pill.addEventListener('click', function(){
+      pills.forEach(function(p){ p.classList.remove('active'); p.setAttribute('aria-selected','false'); });
+      pill.classList.add('active');
+      pill.setAttribute('aria-selected','true');
+      state.category = pill.getAttribute('data-cat');
+      applyVisibility();
+    });
+  });
+
+  if(viewMoreBtn){
+    viewMoreBtn.addEventListener('click', function(){
+      state.expanded = !state.expanded;
+      applyVisibility();
+    });
+  }
+
+  /* Tapping any service tile jumps straight to the booking form and
+     pre-fills that service, so people don't have to re-select it. */
+  tiles.forEach(function(tile){
+    tile.addEventListener('click', function(){
+      var h3 = qs('h3', tile);
+      var name = h3 ? h3.textContent : '';
+      var select = qs('#fService');
+      if(select && name){
+        for(var i=0; i<select.options.length; i++){
+          if(select.options[i].value === name){ select.value = name; break; }
+        }
+        select.closest('.field').classList.add('has-value');
+      }
+      var bookSection = qs('#book');
+      if(bookSection) bookSection.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+      var nameField = qs('#fName');
+      if(nameField) setTimeout(function(){ nameField.focus(); }, prefersReducedMotion ? 0 : 500);
+    });
+  });
+
+  applyVisibility();
+}
+
+/* ---------------------------------------------------------------------------
+   9. TYPEWRITER — types out, deletes, and re-types a small rotating list
+   of phrases in the hero, one letter at a time.
+   ------------------------------------------------------------------------ */
+function initTypewriter(){
+  var target = qs('#typeTarget');
+  if(!target) return;
+  var phrases = [
+    'a plumber, in 30 minutes.',
+    'a home-cooked tiffin, every day.',
+    'a caring hand for a parent.',
+    'a ride, whenever you need one.'
+  ];
+  if(prefersReducedMotion){ target.textContent = phrases[0]; return; }
+
+  var pIndex = 0, cIndex = 0, deleting = false;
+  function tick(){
+    var current = phrases[pIndex];
+    if(!deleting){
+      cIndex++;
+      target.textContent = current.slice(0, cIndex);
+      if(cIndex === current.length){ deleting = true; setTimeout(tick, 1700); return; }
+    } else {
+      cIndex--;
+      target.textContent = current.slice(0, cIndex);
+      if(cIndex === 0){ deleting = false; pIndex = (pIndex + 1) % phrases.length; }
+    }
+    setTimeout(tick, deleting ? 26 : 50);
+  }
+  tick();
+}
+
+/* ---------------------------------------------------------------------------
+   10. BOOKING FORM — real client-side validation (clear, specific messages,
+   not just a red outline), a fake-but-honest submit (there's no real
+   server here — see the code comment at the point we fake it), and a
+   drawn checkmark to celebrate success.
+   ------------------------------------------------------------------------ */
+function initBooking(){
+  var form = qs('#bookingForm');
+  if(!form) return;
+  var fieldsWrap = qs('#bookingFields');
+  var submitBtn = qs('#bookingSubmit');
+  var successBox = qs('#bookingSuccess');
+
+  /* Stop people from picking a date that's already gone by */
+  var dateField = qs('#fDate');
+  if(dateField){
+    var today = new Date();
+    var yyyy = today.getFullYear();
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var dd = String(today.getDate()).padStart(2, '0');
+    dateField.min = yyyy + '-' + mm + '-' + dd;
+  }
+
+  /* Floating-label effect: a field's label turns gold once it has a value */
+  qsa('input, select, textarea', form).forEach(function(el){
+    function sync(){
+      var field = el.closest('.field');
+      if(field) field.classList.toggle('has-value', !!(el.value && el.value.trim() !== ''));
+    }
+    el.addEventListener('input', sync);
+    el.addEventListener('change', sync);
+    sync();
+  });
+
+  function setFieldError(id, message){
+    var input = qs('#' + id);
+    var field = input ? input.closest('.field') : null;
+    var msgEl = qs('#' + id + 'Msg');
+    if(field) field.classList.toggle('error', !!message);
+    if(msgEl) msgEl.textContent = message || '';
+  }
+
+  function validate(){
+    var ok = true;
+    var name = qs('#fName').value.trim();
+    var phoneDigits = qs('#fPhone').value.replace(/\D/g, '');
+    var service = qs('#fService').value;
+    var dateVal = qs('#fDate').value;
+    var address = qs('#fAddress').value.trim();
+
+    if(name.length < 2){ setFieldError('fName', 'Please enter your name.'); ok = false; }
+    else setFieldError('fName', '');
+
+    if(phoneDigits.length < 10){ setFieldError('fPhone', 'Enter a valid 10-digit number.'); ok = false; }
+    else setFieldError('fPhone', '');
+
+    if(!service){ setFieldError('fService', 'Please choose a service.'); ok = false; }
+    else setFieldError('fService', '');
+
+    if(!dateVal){ setFieldError('fDate', 'Please pick a date.'); ok = false; }
+    else{
+      var chosen = new Date(dateVal + 'T00:00:00');
+      var startOfToday = new Date(); startOfToday.setHours(0,0,0,0);
+      if(chosen < startOfToday){ setFieldError('fDate', 'That date has already passed.'); ok = false; }
+      else setFieldError('fDate', '');
+    }
+
+    if(address.length < 5){ setFieldError('fAddress', 'Please add a bit more detail.'); ok = false; }
+    else setFieldError('fAddress', '');
+
+    return ok;
+  }
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!validate()){
+      var firstError = qs('.field.error', form);
+      if(firstError){ var toFocus = qs('input, select, textarea', firstError); if(toFocus) toFocus.focus(); }
+      showToast('Please check the highlighted fields', '⚠️');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    var originalLabel = submitBtn.textContent;
+    submitBtn.textContent = 'Sending…';
+
+    /* NOTE for future-you: this is a self-contained demo with no backend,
+       so there is genuinely nowhere to send this data — no server, no
+       database, nothing leaves the browser. This brief pause just makes
+       the confirmation feel real instead of jarringly instant. If you
+       connect a real API later, this is exactly where that call goes. */
+    setTimeout(function(){
+      if(fieldsWrap) fieldsWrap.style.display = 'none';
+      if(successBox) successBox.classList.add('show');
+      showToast('Booking request received!', '✅');
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalLabel;
+    }, 850);
+  });
+
+  /* The hero and navbar "Book" buttons both just jump down here */
+  ['heroBookBtn', 'navBookBtn'].forEach(function(id){
+    var btn = qs('#' + id);
+    if(!btn) return;
+    btn.addEventListener('click', function(){
+      var section = qs('#book');
+      if(section) section.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+      setTimeout(function(){ var nf = qs('#fName'); if(nf) nf.focus(); }, prefersReducedMotion ? 0 : 500);
+    });
+  });
+}
+
+/* ---------------------------------------------------------------------------
+   11. TESTIMONIALS — a horizontally-snapping strip. The arrow buttons
+   scroll by exactly one card's width, and a thin bar underneath fills up
+   to show roughly how far through the strip you've scrolled.
+   ------------------------------------------------------------------------ */
+function initTestimonials(){
+  var track = qs('#testiTrack');
+  if(!track) return;
+  var prevBtn = qs('#testiPrev');
+  var nextBtn = qs('#testiNext');
+  var progressFill = qs('#testiProgress');
+
+  function cardStep(){
+    var card = qs('.testi-card', track);
+    if(!card) return 300;
+    var style = window.getComputedStyle(track);
+    var gap = parseFloat(style.columnGap || style.gap || '20') || 20;
+    return card.getBoundingClientRect().width + gap;
+  }
+  function scrollByCards(dir){
+    track.scrollBy({ left: dir * cardStep(), behavior: prefersReducedMotion ? 'auto' : 'smooth' });
+  }
+  if(prevBtn) prevBtn.addEventListener('click', function(){ scrollByCards(-1); });
+  if(nextBtn) nextBtn.addEventListener('click', function(){ scrollByCards(1); });
+
+  function updateProgress(){
+    var max = track.scrollWidth - track.clientWidth;
+    var pct = max > 0 ? (track.scrollLeft / max) * 100 : 0;
+    if(progressFill) progressFill.style.width = Math.max(8, pct) + '%';
+  }
+  track.addEventListener('scroll', debounce(updateProgress, 40), { passive:true });
+  updateProgress();
+}
+
+/* ---------------------------------------------------------------------------
+   12. FAQ ACCORDION — only one answer needs to be open at a time isn't
+   enforced here on purpose (people like comparing two answers side by
+   side), each item just tracks its own open/closed state via its own
+   actual scrollHeight, which is what lets the "slide open" animation
+   work for answers of any length.
+   ------------------------------------------------------------------------ */
+function initFAQ(){
+  var items = qsa('.faq-item');
+  items.forEach(function(item){
+    var q = qs('.faq-q', item);
+    var a = qs('.faq-a', item);
+    if(!q || !a) return;
+    q.addEventListener('click', function(){
+      var isOpen = item.classList.toggle('open');
+      q.setAttribute('aria-expanded', String(isOpen));
+      a.style.maxHeight = isOpen ? (a.scrollHeight + 'px') : '0px';
+    });
+  });
+  /* If the viewport resizes while an item is open, its content could now
+     wrap onto a different number of lines — recalc the open ones so the
+     answer never gets awkwardly clipped. */
+  window.addEventListener('resize', debounce(function(){
+    qsa('.faq-item.open').forEach(function(item){
+      var a = qs('.faq-a', item);
+      if(a) a.style.maxHeight = a.scrollHeight + 'px';
+    });
+  }, 150));
+}
+
+/* ---------------------------------------------------------------------------
+   13. SOURCE CODE VIEWER — shows visitors the page's own code: how many
+   lines it has, how many are comments vs real code, with light syntax
+   colouring, line numbers, copy and download buttons.
+
+   A SAFETY NOTE, since this is exactly the kind of feature that's easy to
+   get wrong: whenever we take real text and turn it into on-screen HTML,
+   we must ESCAPE it first (turn < into &lt; and so on) so the browser
+   only ever DISPLAYS the code as text — it never tries to run it. Every
+   function below does the escaping itself, exactly once, right before
+   the text is used — never twice, and never skipped.
+   ------------------------------------------------------------------------ */
+
+var sourceState = {
+  rawLines: [],
+  lineMeta: [],
+  showComments: true,
+  showLineNumbers: true,
+  fullyRendered: false,
+  PREVIEW_COUNT: 70
+};
+
+/* One single regular expression, scanned across a line exactly once, that
+   recognises four kinds of pattern: quoted strings, HTML tag openings,
+   numbers-with-units, and a short list of programming keywords. Anything
+   the regex doesn't match is left as plain text. Because we scan the
+   line ONE time, left to right, matches can never overlap each other —
+   which is what keeps this safe from the "tangled tags" bug that a
+   sequence of separate find-and-replace passes can cause. */
+var TOKEN_PATTERN = /("(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')|(<\/?[a-zA-Z][\w-]*|-->|<!--)|(\b\d+(?:\.\d+)?(?:px|em|rem|vw|vh|deg|ms|s|%)?\b)|(\b(?:function|var|let|const|if|else|for|while|return|new|this|true|false|null|undefined|typeof|class|extends|try|catch|finally|throw|break|continue|switch|case|default|async|await|import|export|from)\b)/g;
+
+function tokenizeLine(raw){
+  var out = [];
+  var lastIndex = 0;
+  var match;
+  TOKEN_PATTERN.lastIndex = 0;
+  while((match = TOKEN_PATTERN.exec(raw)) !== null){
+    if(match.index > lastIndex){
+      out.push({ text: raw.slice(lastIndex, match.index), type:'plain' });
+    }
+    var type = 'plain';
+    if(match[1] !== undefined) type = 'str';
+    else if(match[2] !== undefined) type = 'tag';
+    else if(match[3] !== undefined) type = 'num';
+    else if(match[4] !== undefined) type = 'kw';
+    out.push({ text: match[0], type: type });
+    lastIndex = TOKEN_PATTERN.lastIndex;
+    if(match.index === TOKEN_PATTERN.lastIndex){ TOKEN_PATTERN.lastIndex++; } /* guards against a zero-width match ever looping forever */
+  }
+  if(lastIndex < raw.length){
+    out.push({ text: raw.slice(lastIndex), type:'plain' });
+  }
+  return out;
+}
+
+var TOKEN_CLASS = { str:'tok-str', tag:'tok-tag', num:'tok-num', kw:'tok-kw' };
+
+function renderTokensAsHtml(tokens){
+  var html = '';
+  for(var i=0; i<tokens.length; i++){
+    var t = tokens[i];
+    var safe = escapeHtml(t.text);           /* escape EVERY token — plain text included */
+    html += (t.type === 'plain') ? safe : ('<span class="' + TOKEN_CLASS[t.type] + '">' + safe + '</span>');
+  }
+  return html;
+}
+
+/* Walks every line ONCE, remembering whether we're currently inside a
+   multi-line /* *\/ or <!-- --> comment block, and returns both the
+   totals (for the stat pills) and a per-line "is this a comment" flag
+   (for the highlighting + the show/hide-comments toggle). */
+function analyzeSource(lines){
+  var stats = { total: lines.length, code:0, comment:0, empty:0 };
+  var lineMeta = [];
+  var inBlockComment = false;
+  var inHtmlComment = false;
+
+  for(var i=0; i<lines.length; i++){
+    var trimmed = lines[i].trim();
+
+    if(trimmed === ''){
+      stats.empty++;
+      lineMeta.push({ isComment:false });
+      continue;
+    }
+
+    var isComment;
+    if(inBlockComment){
+      isComment = true;
+      if(trimmed.indexOf('*/') !== -1) inBlockComment = false;
+    } else if(inHtmlComment){
+      isComment = true;
+      if(trimmed.indexOf('-->') !== -1) inHtmlComment = false;
+    } else if(trimmed.indexOf('<!--') === 0){
+      isComment = true;
+      if(trimmed.indexOf('-->') === -1) inHtmlComment = true;
+    } else if(trimmed.indexOf('/*') === 0){
+      isComment = true;
+      if(trimmed.indexOf('*/') === -1) inBlockComment = true;
+    } else if(trimmed.indexOf('//') === 0){
+      isComment = true;
+    } else {
+      isComment = false; /* a line with real code on it counts as a code line, even if a comment trails after it */
+    }
+
+    if(isComment) stats.comment++; else stats.code++;
+    lineMeta.push({ isComment: isComment });
+  }
+  return { stats: stats, lineMeta: lineMeta };
+}
+
+function buildLineRowHtml(zeroBasedIndex, rawLine, isComment){
+  var codeHtml = renderTokensAsHtml(tokenizeLine(rawLine));
+  if(codeHtml === '') codeHtml = ' '; /* keeps genuinely blank lines the same height as the rest */
+  var cls = isComment ? 'code-line is-comment' : 'code-line';
+  return '<div class="' + cls + '"><span class="ln">' + (zeroBasedIndex + 1) + '</span><span class="lc">' + codeHtml + '</span></div>';
+}
+
+function renderCodeLines(uptoCount){
+  var inner = qs('#codeInner');
+  if(!inner) return;
+  var limit = Math.min(uptoCount, sourceState.rawLines.length);
+  var rows = [];
+  for(var i=0; i<limit; i++){
+    rows.push(buildLineRowHtml(i, sourceState.rawLines[i], sourceState.lineMeta[i].isComment));
+  }
+  inner.innerHTML = rows.join('');   /* ONE assignment; every piece inside was escaped above */
+  inner.classList.toggle('hide-comments', !sourceState.showComments);
+  inner.classList.toggle('no-line-numbers', !sourceState.showLineNumbers);
+}
+
+function copyToClipboard(text){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    return navigator.clipboard.writeText(text).then(function(){ return true; }).catch(function(){ return fallbackCopy(text); });
+  }
+  return Promise.resolve(fallbackCopy(text));
+}
+function fallbackCopy(text){
+  /* Older-browser fallback: a hidden, off-screen textarea + the classic
+     execCommand('copy'). Deprecated, but still the only thing that
+     works in a handful of browsers that lack the modern Clipboard API. */
+  try{
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    var ok = document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  } catch(e){ return false; }
+}
+
+function initSourceViewer(){
+  var openBtn = qs('#sourceBtn');
+  var modal = qs('#sourceModal');
+  var closeBtn = qs('#modalClose');
+  if(!openBtn || !modal || !closeBtn) return;
+
+  var loaded = false;
+  var lastFocused = null;
+
+  function captureAndRenderSource(){
+    var fullHtml = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    sourceState.rawLines = fullHtml.split('\n');
+
+    var analysis = analyzeSource(sourceState.rawLines);
+    sourceState.lineMeta = analysis.lineMeta;
+
+    var elTotal = qs('#statTotal'), elCode = qs('#statCode'), elComments = qs('#statComments'), elEmpty = qs('#statEmpty');
+    if(elTotal) elTotal.textContent = analysis.stats.total.toLocaleString();
+    if(elCode) elCode.textContent = analysis.stats.code.toLocaleString();
+    if(elComments) elComments.textContent = analysis.stats.comment.toLocaleString();
+    if(elEmpty) elEmpty.textContent = analysis.stats.empty.toLocaleString();
+
+    var fade = qs('#codeFade');
+    if(sourceState.rawLines.length > sourceState.PREVIEW_COUNT){
+      renderCodeLines(sourceState.PREVIEW_COUNT);
+      sourceState.fullyRendered = false;
+      if(fade) fade.classList.remove('gone');
+    } else {
+      renderCodeLines(sourceState.rawLines.length);
+      sourceState.fullyRendered = true;
+      if(fade) fade.classList.add('gone');
+    }
+    loaded = true;
+  }
+
+  function getFocusable(){
+    return qsa('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])', modal)
+      .filter(function(el){ return el.offsetParent !== null && !el.disabled; });
+  }
+  function onKeydown(e){
+    if(e.key === 'Escape'){ closeSourceModal(); return; }
+    if(e.key === 'Tab'){
+      var focusables = getFocusable();
+      if(!focusables.length) return;
+      var first = focusables[0], last = focusables[focusables.length - 1];
+      if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+      else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+    }
+  }
+
+  function openSourceModal(){
+    lastFocused = document.activeElement;
+    if(!loaded) captureAndRenderSource();
+    /* Setting visibility here directly (not through the CSS class) makes
+       it an ordinary, instant property change rather than something
+       gated behind a transition's timing — so the modal is genuinely
+       focusable the moment this line runs, no guessing how many frames
+       to wait. Opacity still fades in smoothly via the CSS transition. */
+    modal.style.visibility = 'visible';
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    closeBtn.focus();
+    document.addEventListener('keydown', onKeydown);
+  }
+  function closeSourceModal(){
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', onKeydown);
+    if(lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+    /* Wait for the fade-out to actually finish before taking the modal
+       out of the tab order again — closing this a moment too early would
+       make it vanish mid-animation instead of gently fading away. */
+    setTimeout(function(){ modal.style.visibility = ''; }, 480);
+  }
+
+  openBtn.addEventListener('click', openSourceModal);
+  closeBtn.addEventListener('click', closeSourceModal);
+  modal.addEventListener('click', function(e){ if(e.target === modal) closeSourceModal(); });
+
+  var viewFullBtn = qs('#btnViewFull');
+  if(viewFullBtn){
+    viewFullBtn.addEventListener('click', function(){
+      renderCodeLines(sourceState.rawLines.length);
+      sourceState.fullyRendered = true;
+      var fade = qs('#codeFade');
+      if(fade) fade.classList.add('gone');
+    });
+  }
+
+  var toggleCommentsBtn = qs('#btnToggleComments');
+  var commentsLabel = qs('#commentsLabel');
+  if(toggleCommentsBtn){
+    toggleCommentsBtn.addEventListener('click', function(){
+      sourceState.showComments = !sourceState.showComments;
+      var inner = qs('#codeInner');
+      if(inner) inner.classList.toggle('hide-comments', !sourceState.showComments);
+      toggleCommentsBtn.classList.toggle('on', !sourceState.showComments);
+      if(commentsLabel) commentsLabel.textContent = sourceState.showComments ? 'Hide Comments' : 'Show Comments';
+    });
+  }
+
+  var toggleNumsBtn = qs('#btnToggleNums');
+  if(toggleNumsBtn){
+    toggleNumsBtn.addEventListener('click', function(){
+      sourceState.showLineNumbers = !sourceState.showLineNumbers;
+      var inner = qs('#codeInner');
+      if(inner) inner.classList.toggle('no-line-numbers', !sourceState.showLineNumbers);
+      toggleNumsBtn.classList.toggle('on', !sourceState.showLineNumbers);
+    });
+  }
+
+  var copyBtn = qs('#btnCopy');
+  if(copyBtn){
+    copyBtn.addEventListener('click', function(){
+      var fullText = sourceState.rawLines.join('\n');
+      copyToClipboard(fullText).then(function(ok){
+        showToast(ok ? 'Copied successfully!' : 'Could not copy — try selecting the code by hand', ok ? '📋' : '⚠️');
+      });
+    });
+  }
+
+  var downloadBtn = qs('#btnDownload');
+  if(downloadBtn){
+    downloadBtn.addEventListener('click', function(){
+      var fullText = sourceState.rawLines.join('\n');
+      try{
+        var blob = new Blob([fullText], { type:'text/html' });
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = 'homeseva-source.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 1200);
+        showToast('Download started', '⬇️');
+      } catch(err){
+        showToast('Download isn\u2019t supported in this browser', '⚠️');
+      }
+    });
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   14. FOOTER SIGNATURE SEAL — the year updates itself forever (nobody
+   ever has to remember to bump it), a whispered line underneath quietly
+   rotates, and the soft glow inside the seal leans toward wherever the
+   cursor actually is within that box.
+   ------------------------------------------------------------------------ */
+function initFooterSeal(){
+  var yearEl = qs('#yearNow');
+  if(yearEl) yearEl.textContent = String(new Date().getFullYear());
+
+  var whisperEl = qs('#sealWhisper');
+  var whispers = [
+    'Some things are built to function. This was built to feel.',
+    'Not everything here is visible\u2026 but it\u2019s all intentional.',
+    'If you noticed this, you already understand the difference.',
+    'Crafted in silence, but it speaks when it matters.',
+    'Most will scroll past. A few will feel it.',
+    'This isn\u2019t design. This is presence.'
+  ];
+  if(whisperEl){
+    var idx = Math.floor(Math.random() * whispers.length);
+    whisperEl.textContent = whispers[idx];
+    if(!prefersReducedMotion){
+      setInterval(function(){
+        idx = (idx + 1) % whispers.length;
+        whisperEl.style.opacity = '0';
+        setTimeout(function(){
+          whisperEl.textContent = whispers[idx];
+          whisperEl.style.opacity = '';
+        }, 500);
+      }, 6500);
+    }
+  }
+
+  var seal = qs('#signatureSeal');
+  if(seal && !isTouchDevice && !prefersReducedMotion){
+    seal.addEventListener('mousemove', function(e){
+      var rect = seal.getBoundingClientRect();
+      var x = ((e.clientX - rect.left) / rect.width) * 100;
+      var y = ((e.clientY - rect.top) / rect.height) * 100;
+      seal.style.setProperty('--seal-x', x + '%');
+      seal.style.setProperty('--seal-y', y + '%');
+    });
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   15. TOASTS — a tiny, reusable helper any part of the page can call to
+   show a quick confirmation message. Uses textContent (never innerHTML)
+   for the message itself, so it's safe no matter what text is passed in.
+   ------------------------------------------------------------------------ */
+function showToast(message, emoji){
+  var stack = qs('#toastStack');
+  if(!stack) return;
+  var toast = document.createElement('div');
+  toast.className = 'toast';
+
+  var dot = document.createElement('span');
+  dot.className = 't-dot';
+  dot.textContent = emoji || '\u2713';
+
+  var text = document.createElement('span');
+  text.textContent = message;
+
+  toast.appendChild(dot);
+  toast.appendChild(text);
+  stack.appendChild(toast);
+
+  var autoTimer = setTimeout(function(){ removeToast(toast); }, 3400);
+  toast.addEventListener('click', function(){ clearTimeout(autoTimer); removeToast(toast); });
+}
+function removeToast(toast){
+  if(!toast || !toast.parentNode) return;
+  toast.classList.add('leaving');
+  setTimeout(function(){ if(toast.parentNode) toast.remove(); }, 400);
+}
+
+/* ---------------------------------------------------------------------------
+   16. PWA BITS — a best-effort, entirely self-contained attempt at
+   offline support. Two honest notes for future-you:
+     - Browsers only allow Service Workers on a "secure context" (a real
+       https:// page, or localhost). Opened straight from a local file,
+       or a file:// path, this step safely does nothing at all instead
+       of throwing errors — the rest of the page is completely
+       unaffected either way.
+     - We're registering the worker from a Blob URL (a script built
+       in-memory, right here in the file) rather than a separate .js
+       file, to keep everything inside this one document. A few older
+       browser versions don't support that specific trick even when
+       Service Workers themselves are supported — again, handled
+       quietly, with no impact on anything else on the page.
+   ------------------------------------------------------------------------ */
+function initPWA(){
+  if('serviceWorker' in navigator && window.isSecureContext){
+    var swSource = [
+      "const CACHE_NAME = 'homeseva-cache-v1';",
+      "self.addEventListener('install', function(e){ self.skipWaiting(); });",
+      "self.addEventListener('activate', function(e){ self.clients.claim(); });",
+      "self.addEventListener('fetch', function(e){",
+      "  if(e.request.method !== 'GET') return;",
+      "  e.respondWith(",
+      "    caches.match(e.request).then(function(cached){",
+      "      var networkFetch = fetch(e.request).then(function(response){",
+      "        caches.open(CACHE_NAME).then(function(cache){ cache.put(e.request, response.clone()); });",
+      "        return response;",
+      "      }).catch(function(){ return cached; });",
+      "      return cached || networkFetch;",
+      "    })",
+      "  );",
+      "});"
+    ].join('\n');
+    try{
+      var swUrl = URL.createObjectURL(new Blob([swSource], { type:'text/javascript' }));
+      navigator.serviceWorker.register(swUrl).catch(function(){ /* fine — page still works without it */ });
+    } catch(e){ /* fine — page still works without it */ }
+  }
+
+  var banner = qs('#offlineBanner');
+  function updateOnlineState(){ if(banner) banner.classList.toggle('show', !navigator.onLine); }
+  window.addEventListener('online', updateOnlineState);
+  window.addEventListener('offline', updateOnlineState);
+  updateOnlineState();
+}
+
+/* ---------------------------------------------------------------------------
+   17. STARTUP — every feature above is switched on here, in one clear,
+   deliberate order. Keeping every "turn this on" call in exactly one
+   place (rather than scattered across the file) is what makes it easy
+   to reason about what runs before what.
+   ------------------------------------------------------------------------ */
+function initAll(){
+  initTheme();
+  initMobileNav();
+  initRipple();
+  initScrollFX();
+  initCursorGlow();
+  initRevealObserver();
+  initCounters();
+  initServices();
+  initTypewriter();
+  initBooking();
+  initTestimonials();
+  initFAQ();
+  initSourceViewer();
+  initFooterSeal();
+  initPWA();
+}
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', initAll);
+} else {
+  initAll(); /* the script tag is at the end of <body>, so in practice the DOM is usually already ready by the time we get here — this covers that case too */
+}
+</script>
+</body>
+</html>
